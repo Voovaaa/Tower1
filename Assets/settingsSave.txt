@@ -1,0 +1,1 @@
+fullscreen True;volume -15,11693;resolutionOption 6
