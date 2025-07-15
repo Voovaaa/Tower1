@@ -10,7 +10,6 @@ public class saveLogic : MonoBehaviour
     public static string[] defaultSaveValues;
     public static Dictionary<string, string> defaultProfileSaveData;
 
-    public static string currentProfileSaveName;
     public static Dictionary<string, string> currentProfileSaveData;
 
     public static void setSettingsSave(bool isFullscreen, float volume, int resolutionOption)
@@ -39,36 +38,49 @@ public class saveLogic : MonoBehaviour
         }
         return settingsSave;
     }
-    public static void setProfileSave(string profileName, Dictionary<string, string> profileData)
+    public static void setProfileSave(Dictionary<string, string> profileData)
     {
+        string profileName = PlayerPrefs.GetString("currentProfileName");
         foreach (KeyValuePair<string, string> dataPair in profileData)
         {
-            PlayerPrefs.SetString($"{profileName} {dataPair.Key}", dataPair.Value);
+            setProfileSaveValue(dataPair.Key, dataPair.Value);
+            //PlayerPrefs.SetString($"{profileName} {dataPair.Key}", dataPair.Value);
         }
-        PlayerPrefs.Save();
+        //PlayerPrefs.Save();
     }
-    public static Dictionary<string, string> getProfileSaveData(string profileName)
+    public static Dictionary<string, string> getProfileSaveData()
     {
+        string profileName = PlayerPrefs.GetString("currentProfileName");
         Dictionary<string, string> profileSaveData = new Dictionary<string, string>();
         if (PlayerPrefs.HasKey($"{profileName} {saveKeys[0]}"))
         {
             for (int i = 0; i < saveKeys.Length; i++)
             {
-                profileSaveData.Add(saveKeys[i], PlayerPrefs.GetString($"{profileName} {saveKeys[i]}"));
+                profileSaveData.Add(saveKeys[i], getProfileSaveValue(saveKeys[i]));
             }
         }
         else
         {
             createProfile(profileName);
-            profileSaveData = getProfileSaveData(profileName);
+            profileSaveData = getProfileSaveData();
         }
         return profileSaveData;
     }
-    public static void createProfile(string profileName) { setProfileSave(profileName, defaultProfileSaveData); }
+    public static void createProfile(string profileName) { setProfileSave(defaultProfileSaveData); }
     public static void InitializeDefaultProfileSaveData()
     {
-        string saveKeysString = "huy jopa text"; // 1
-        string saveValuesString = "a b qwe"; // 1
+        string saveKeysString = "HUY1 " +
+            "hpCurrent" + 
+            " hpMax" +
+            " damageAverage" +
+            " xp" +
+            " lvl"; //5
+        string saveValuesString = "HUY1 " +
+            "10" +
+            " 10" +
+            " 1" +
+            " 0" +
+            " 0"; // 5
         saveKeys = saveKeysString.Split(" ");
         defaultSaveValues = saveValuesString.Split(" ");
         defaultProfileSaveData = new Dictionary<string, string>();
@@ -76,5 +88,15 @@ public class saveLogic : MonoBehaviour
         {
             defaultProfileSaveData.Add(saveKeys[i], defaultSaveValues[i]);
         }
+        
+    }
+    public static void setProfileSaveValue(string key, string value)
+    {
+        PlayerPrefs.SetString($"{PlayerPrefs.GetString("currentProfileName")} {key}", value);
+        PlayerPrefs.Save();
+    }
+    public static string getProfileSaveValue(string key)
+    {
+        return PlayerPrefs.GetString($"{PlayerPrefs.GetString("currentProfileName")} {key}");
     }
 }
