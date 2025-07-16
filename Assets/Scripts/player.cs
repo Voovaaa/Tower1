@@ -5,15 +5,10 @@ using UnityEngine;
 
 public class player : MonoBehaviour
 {
-    //public static float hpCurrent;
-    //public static float hpMax;
-    //public static float armorValue;
-    //public static float damageAverage;
-    //public static int lvl;
-    //public static float xp; // 0 - 1, needed xp doesnt change after lvlup
-
-    //public static int positionX;
-    //public static int positionY;
+    public static GameObject currentTile;
+    public static int currentFloorNumber;
+    public static GameObject currentFloor;
+    public GameObject Scripts;
 
     public static Dictionary<string, string> profileData;
 
@@ -22,12 +17,22 @@ public class player : MonoBehaviour
     {
         saveLogic.InitializeDefaultProfileSaveData();
         profileData = saveLogic.getProfileSaveData();
+        currentTile = Scripts.GetComponent<game>().getTileToSpawn();
+        currentTile.GetComponent<tile>().setStatus("player");
+    }
+
+
+    public static void moveToTile(GameObject newTile)
+    {
+        currentTile.GetComponent<tile>().setStatus("wasHere");
+        currentTile = newTile;
+        currentTile.GetComponent<tile>().setStatus("player");
     }
 
     public static void gotXp(float xpGot)
     {
         float xp = float.Parse(saveLogic.getProfileSaveValue("xp"));
-        xp += 0.3f;
+        xp += xpGot;
         if (xp > 1)
         {
             xp -= 1;

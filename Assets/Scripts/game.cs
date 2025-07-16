@@ -6,17 +6,32 @@ using UnityEngine;
 
 public class game : MonoBehaviour
 {
-
-    public TMP_Text forTestText;
+    public int defaultFloorNumber;
+    public GameObject defaultFloor;
+    public GameObject tileToSpawnOnFloor2;
     private void Awake()
     {
+        player.currentFloorNumber = defaultFloorNumber;
+        player.currentFloor = defaultFloor; // !
     }
     private void Start()
     {
     }
     private void Update()
     {
-        test.testTextUpdate(forTestText);
     }
-
+    public GameObject getTileToSpawn()
+    {
+        switch (player.currentFloorNumber)
+        {
+            case 2:
+                return tileToSpawnOnFloor2;
+            default:
+                return tileToSpawnOnFloor2;
+        }
+    }
+    //public static GameObject getFloor(int floorNumber)
+    //{
+    //    return 
+    //}
 }

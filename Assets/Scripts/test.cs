@@ -20,9 +20,10 @@ public class test : MonoBehaviour
     }
     public static void testTextUpdate(TMP_Text testText)
     {
-        string lvl = saveLogic.getProfileSaveValue("lvl");
-        string xp = saveLogic.getProfileSaveValue("xp");
-        testText.text = $"lvl{lvl}, xp{xp}";
+
+        //string lvl = saveLogic.getProfileSaveValue("lvl");
+        //string xp = saveLogic.getProfileSaveValue("xp");
+        //testText.text = $"lvl{lvl}, xp{xp}";
     }
     public void testQuitButton()
     {
