@@ -6,7 +6,7 @@ using TMPro;
 public class test : MonoBehaviour
 {
 
-
+    public GameObject floor;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +24,11 @@ public class test : MonoBehaviour
         //string lvl = saveLogic.getProfileSaveValue("lvl");
         //string xp = saveLogic.getProfileSaveValue("xp");
         //testText.text = $"lvl{lvl}, xp{xp}";
+    }
+    public void testSetActiveButton()
+    {
+        if (floor.activeSelf) {floor.SetActive(false);}
+        else { floor.SetActive(true); }
     }
     public void testQuitButton()
     {

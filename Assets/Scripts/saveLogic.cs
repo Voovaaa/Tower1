@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class saveLogic : MonoBehaviour
@@ -11,6 +12,8 @@ public class saveLogic : MonoBehaviour
     public static Dictionary<string, string> defaultProfileSaveData;
 
     public static Dictionary<string, string> currentProfileSaveData;
+
+    //public static game.floor defaultFloor; // -1
 
     public static void setSettingsSave(bool isFullscreen, float volume, int resolutionOption)
     {
@@ -38,6 +41,8 @@ public class saveLogic : MonoBehaviour
         }
         return settingsSave;
     }
+
+
     public static void setProfileSave(Dictionary<string, string> profileData)
     {
         string profileName = PlayerPrefs.GetString("currentProfileName");
@@ -52,7 +57,7 @@ public class saveLogic : MonoBehaviour
     {
         string profileName = PlayerPrefs.GetString("currentProfileName");
         Dictionary<string, string> profileSaveData = new Dictionary<string, string>();
-        if (PlayerPrefs.HasKey($"{profileName} {saveKeys[0]}"))
+        if (PlayerPrefs.HasKey($"{profileName} {saveKeys[saveKeys.Length - 1]}"))
         {
             for (int i = 0; i < saveKeys.Length; i++)
             {
@@ -69,26 +74,20 @@ public class saveLogic : MonoBehaviour
     public static void createProfile(string profileName) { setProfileSave(defaultProfileSaveData); }
     public static void InitializeDefaultProfileSaveData()
     {
-        string saveKeysString = "HUY1 " +
-            "hpCurrent" + 
-            " hpMax" +
-            " damageAverage" +
-            " xp" +
-            " lvl"; //5
-        string saveValuesString = "HUY1 " +
-            "10" +
-            " 10" +
-            " 1" +
-            " 0" +
-            " 0"; // 5
-        saveKeys = saveKeysString.Split(" ");
-        defaultSaveValues = saveValuesString.Split(" ");
+        string saveKeysString = "hpMax;";
+        string saveValuesString = "10;";
+
+        saveKeys = saveKeysString.Split(";");
+        defaultSaveValues = saveValuesString.Split(";");
+
         defaultProfileSaveData = new Dictionary<string, string>();
         for (int i = 0; i < saveKeys.Length; i++)
         {
             defaultProfileSaveData.Add(saveKeys[i], defaultSaveValues[i]);
         }
-        
+
+        //defaultFloor = new game.floor(-1);
+
     }
     public static void setProfileSaveValue(string key, string value)
     {
@@ -99,4 +98,24 @@ public class saveLogic : MonoBehaviour
     {
         return PlayerPrefs.GetString($"{PlayerPrefs.GetString("currentProfileName")} {key}");
     }
+
+    public static void setFloorSaveValue(int floorNumber, string key, string value)
+    {
+        setProfileSaveValue($"floor {floorNumber} {key}", value);
+    }
+    public static string getFloorSaveValue(int floorNumber, string key)
+    {
+        return getProfileSaveValue($"floor {floorNumber} {key}");
+    }
+
+
+
+
+
+
+
+
+    
+
+
 }
