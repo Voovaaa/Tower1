@@ -1,20 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEditor.SearchService;
 using UnityEngine;
 
 public class game : MonoBehaviour
 {
     public int defaultFloorNumber;
-    public GameObject defaultFloor;
     public GameObject tileToSpawnOnFloor2;
     public static floor floor2;
     private void Awake()
     {
         player.currentFloorNumber = defaultFloorNumber;
-        player.currentFloor = defaultFloor; // !
-        floor2 = new floor(2, 5);
+        floor2 = new floor(2, 5, tileToSpawnOnFloor2, 92-1);
+        player.currentFloor = floor2; // change it later
     }
 
     public class floor
@@ -23,18 +23,24 @@ public class game : MonoBehaviour
         public int floorNumber;
         public int enemiesAmount;
         public bool wasHere;
+        public int unknownTilesAmount;
 
-        public floor(int fN, int eA) // floor number and default floor data
+        public floor(int fN, int eA, GameObject tileToSpawn, int unknownTiles) // floor number and default floor data
         {
             floorNumber = fN;
-            if (bool.Parse(saveLogic.getFloorSaveValue(fN, "wasHere"))) //load floor save
+            unknownTilesAmount = unknownTiles;
+            string wasHereString = saveLogic.getFloorSaveValue(floorNumber, "wasHere");
+            if (wasHereString != "" && bool.Parse(wasHereString)) //load floor save
             {
             }
             else //load default data if wasnt on floor
             {
-                eA = int.Parse(saveLogic.getFloorSaveValue(floorNumber, "enemies amount"));
+                wasHere = false;
+                saveLogic.setFloorSaveValue(floorNumber, "wasHere", wasHere.ToString());
+                enemiesAmount = eA;
+                saveLogic.setFloorSaveValue(floorNumber, "enemiesAmount", enemiesAmount.ToString());
             }
-            enemiesAmount = eA;
+            tileToSpawnOn = tileToSpawn;
         }
     }
 
@@ -53,8 +59,4 @@ public class game : MonoBehaviour
                 return tileToSpawnOnFloor2;
         }
     }
-    //public static GameObject getFloor(int floorNumber)
-    //{
-    //    return 
-    //}
 }

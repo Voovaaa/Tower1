@@ -53,8 +53,37 @@ public class tile : MonoBehaviour
         }
         player.moveToTile(transform.gameObject);
     }
+    public void unknownTileButton()
+    {
+        int enemiesAmount = int.Parse(saveLogic.getFloorSaveValue(player.currentFloorNumber, "enemiesAmount"));
+        // Debug.Log($"{player.currentFloor.unknownTilesAmount} {enemiesAmount}");
+        if (enemiesAmount == player.currentFloor.unknownTilesAmount)
+        {
+            enemybattleorsomethinglikethat();
+        }
+        else if (enemiesAmount != 0 && Random.value >= 0.8f)
+        {
+            enemybattleorsomethinglikethat();
+        }
+        //Debug.Log($"{player.currentFloor.unknownTilesAmount} {enemiesAmount}");
+        player.currentFloor.unknownTilesAmount -= 1;
+        Debug.Log("unknownMethod");
+    }
+    public void wasHereTileButton()
+    {
+        Debug.Log("wasHereMethod");
+    }
+    public void playerTileButton()
+    {
+        Debug.Log("playerMethod");
+    }
 
-
+    public void enemybattleorsomethinglikethat()
+    {
+        Debug.Log("Butle");
+        player.currentFloor.enemiesAmount -= 1;
+        saveLogic.setFloorSaveValue(player.currentFloorNumber, "enemiesAmount", (player.currentFloor.enemiesAmount).ToString());
+    }
 
     public void setMarkImage()
     {
@@ -80,18 +109,5 @@ public class tile : MonoBehaviour
                 break;
         }
         markImage.SetActive(true);
-    }
-    public void unknownTileButton()
-    {
-
-        Debug.Log("unknownMethod");
-    }
-    public void wasHereTileButton()
-    {
-        Debug.Log("wasHereMethod");
-    }
-    public void playerTileButton()
-    {
-        Debug.Log("playerMethod");
     }
 }

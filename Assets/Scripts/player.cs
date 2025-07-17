@@ -6,8 +6,10 @@ using UnityEngine;
 public class player : MonoBehaviour
 {
     public static GameObject currentTile;
+
     public static int currentFloorNumber;
-    public static GameObject currentFloor;
+    public static game.floor currentFloor;
+
     public GameObject Scripts;
 
     public static Dictionary<string, string> profileData;
