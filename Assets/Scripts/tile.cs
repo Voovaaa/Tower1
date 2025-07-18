@@ -51,12 +51,19 @@ public class tile : MonoBehaviour
                 unknownTileButton();
                 break;
         }
-        player.moveToTile(transform.gameObject);
     }
     public void unknownTileButton()
     {
+        Vector2 clickedTilePosition = transform.position;
+        Vector2 playerTilePosition = player.currentTile.transform.position;
+        float tilesDistance = Vector2.Distance(clickedTilePosition, playerTilePosition);
+        Debug.Log(tilesDistance);
+        if (tilesDistance > 1.1f)
+        {
+            return;
+        }
+        Debug.Log(tilesDistance);
         int enemiesAmount = int.Parse(saveLogic.getFloorSaveValue(player.currentFloorNumber, "enemiesAmount"));
-        // Debug.Log($"{player.currentFloor.unknownTilesAmount} {enemiesAmount}");
         if (enemiesAmount == player.currentFloor.unknownTilesAmount)
         {
             enemybattleorsomethinglikethat();
@@ -65,13 +72,16 @@ public class tile : MonoBehaviour
         {
             enemybattleorsomethinglikethat();
         }
-        //Debug.Log($"{player.currentFloor.unknownTilesAmount} {enemiesAmount}");
         player.currentFloor.unknownTilesAmount -= 1;
         Debug.Log("unknownMethod");
+
+        player.moveToTile(transform.gameObject);
     }
     public void wasHereTileButton()
     {
         Debug.Log("wasHereMethod");
+
+        player.moveToTile(transform.gameObject);
     }
     public void playerTileButton()
     {

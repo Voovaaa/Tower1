@@ -13,7 +13,7 @@ public class saveLogic : MonoBehaviour
 
     public static Dictionary<string, string> currentProfileSaveData;
 
-    //public static game.floor defaultFloor; // -1
+    public static game.loot[] allLoots;
 
     public static void setSettingsSave(bool isFullscreen, float volume, int resolutionOption)
     {
@@ -108,8 +108,28 @@ public class saveLogic : MonoBehaviour
         return getProfileSaveValue($"floor {floorNumber} {key}");
     }
 
-
-
+    public static game.loot[] getAllLoot ()
+    {
+        return null;
+    }
+    public static game.loot getLootInstance(string name)
+    {
+        return null;
+    }
+    public static void lootFound()
+    {
+        //saveLogic.setInventorySaveValue(floorNumber, $"LOOT{lootInstance.name}", "true");
+    }
+    public static void setInventorySaveValue(string lootName, bool isFound)
+    {
+        setProfileSaveValue($"LOOT{lootName}", isFound.ToString());
+    }
+    public static void initializeAllLootsArray()
+    {
+        game.loot[] allLoot = new game.loot[999];
+        game.loot huetaShield = new game.loot("hueta", 1, 3);
+        allLoot[0] = huetaShield;
+    }
 
 
 

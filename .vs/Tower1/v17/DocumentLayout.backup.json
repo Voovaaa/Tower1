@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "D:\\programs\\unityProjs\\Tower1\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{BB71F827-D25A-3E47-8EB6-F8AD713685A9}|Assembly-CSharp.csproj|D:\\programs\\unityProjs\\Tower1\\assets\\scripts\\game.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BB71F827-D25A-3E47-8EB6-F8AD713685A9}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\game.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{BB71F827-D25A-3E47-8EB6-F8AD713685A9}|Assembly-CSharp.csproj|D:\\programs\\unityProjs\\Tower1\\assets\\scripts\\tile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BB71F827-D25A-3E47-8EB6-F8AD713685A9}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\tile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{BB71F827-D25A-3E47-8EB6-F8AD713685A9}|Assembly-CSharp.csproj|d:\\programs\\unityprojs\\tower1\\assets\\scripts\\savelogic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BB71F827-D25A-3E47-8EB6-F8AD713685A9}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\savelogic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{BB71F827-D25A-3E47-8EB6-F8AD713685A9}|Assembly-CSharp.csproj|d:\\programs\\unityprojs\\tower1\\assets\\scripts\\game.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BB71F827-D25A-3E47-8EB6-F8AD713685A9}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\game.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{BB71F827-D25A-3E47-8EB6-F8AD713685A9}|Assembly-CSharp.csproj|D:\\programs\\unityProjs\\Tower1\\assets\\scripts\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -19,8 +19,8 @@
       "RelativeMoniker": "D:0:0:{BB71F827-D25A-3E47-8EB6-F8AD713685A9}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\test.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{BB71F827-D25A-3E47-8EB6-F8AD713685A9}|Assembly-CSharp.csproj|D:\\programs\\unityProjs\\Tower1\\assets\\scripts\\tile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BB71F827-D25A-3E47-8EB6-F8AD713685A9}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\tile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{BB71F827-D25A-3E47-8EB6-F8AD713685A9}|Assembly-CSharp.csproj|D:\\programs\\unityProjs\\Tower1\\assets\\scripts\\savelogic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BB71F827-D25A-3E47-8EB6-F8AD713685A9}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\savelogic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,17 +30,17 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
               "Title": "tile.cs",
               "DocumentMoniker": "D:\\programs\\unityProjs\\Tower1\\Assets\\Scripts\\tile.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\tile.cs",
               "ToolTip": "D:\\programs\\unityProjs\\Tower1\\Assets\\Scripts\\tile.cs",
               "RelativeToolTip": "Assets\\Scripts\\tile.cs",
-              "ViewState": "AgIAAAUAAAAAAAAAAAAQwBAAAAAbAAAAAAAAAA==",
+              "ViewState": "AgIAACwAAAAAAAAAAAAkwDoAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-16T08:15:41.485Z",
               "EditorCaption": ""
@@ -53,7 +53,7 @@
               "RelativeDocumentMoniker": "Assets\\Scripts\\player.cs",
               "ToolTip": "D:\\programs\\unityProjs\\Tower1\\Assets\\Scripts\\player.cs",
               "RelativeToolTip": "Assets\\Scripts\\player.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-15T18:16:20.826Z",
               "EditorCaption": ""
@@ -73,26 +73,26 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "saveLogic.cs",
               "DocumentMoniker": "D:\\programs\\unityProjs\\Tower1\\Assets\\Scripts\\saveLogic.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\saveLogic.cs",
               "ToolTip": "D:\\programs\\unityProjs\\Tower1\\Assets\\Scripts\\saveLogic.cs",
               "RelativeToolTip": "Assets\\Scripts\\saveLogic.cs",
-              "ViewState": "AgIAABkAAAAAAAAAAAA5wGAAAAA4AAAAAAAAAA==",
+              "ViewState": "AgIAADcAAAAAAAAAAAA7wE4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-13T17:50:19.853Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "game.cs",
               "DocumentMoniker": "D:\\programs\\unityProjs\\Tower1\\Assets\\Scripts\\game.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\game.cs",
               "ToolTip": "D:\\programs\\unityProjs\\Tower1\\Assets\\Scripts\\game.cs",
               "RelativeToolTip": "Assets\\Scripts\\game.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAQwCAAAAA2AAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAA4AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-14T03:30:27.393Z",
               "EditorCaption": ""

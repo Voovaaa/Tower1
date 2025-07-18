@@ -14,6 +14,8 @@ public class player : MonoBehaviour
 
     public static Dictionary<string, string> profileData;
 
+    public static game.loot[] inventory;
+
 
     private void Awake()
     {
