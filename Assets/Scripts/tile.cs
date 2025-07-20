@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class tile : MonoBehaviour
 {
+    public GameObject scripts;
     public string status; // unknown, wasHere, player
     public string currentMarkImageName;
 
     private void Start()
     {
+        scripts = GameObject.Find("Scripts");
         setStatus(status);
     }
 
@@ -62,15 +64,14 @@ public class tile : MonoBehaviour
         {
             return;
         }
-        Debug.Log(tilesDistance);
         int enemiesAmount = int.Parse(saveLogic.getFloorSaveValue(player.currentFloorNumber, "enemiesAmount"));
         if (enemiesAmount == player.currentFloor.unknownTilesAmount)
         {
-            enemybattleorsomethinglikethat();
+            battleStart();
         }
         else if (enemiesAmount != 0 && Random.value >= 0.8f)
         {
-            enemybattleorsomethinglikethat();
+            battleStart();
         }
         player.currentFloor.unknownTilesAmount -= 1;
         Debug.Log("unknownMethod");
@@ -88,11 +89,10 @@ public class tile : MonoBehaviour
         Debug.Log("playerMethod");
     }
 
-    public void enemybattleorsomethinglikethat()
+    public void battleStart()
     {
+        scripts.GetComponent<game>().battleStart();
         Debug.Log("Butle");
-        player.currentFloor.enemiesAmount -= 1;
-        saveLogic.setFloorSaveValue(player.currentFloorNumber, "enemiesAmount", (player.currentFloor.enemiesAmount).ToString());
     }
 
     public void setMarkImage()

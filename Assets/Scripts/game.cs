@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
-using UnityEditor.SearchService;
 using UnityEngine;
 
 public class game : MonoBehaviour
 {
+    public GameObject battle;
+
     public int defaultFloorNumber;
     public GameObject tileToSpawnOnFloor2;
     public static floor floor2;
@@ -15,8 +16,9 @@ public class game : MonoBehaviour
     public loot lootuha;
     private void Awake()
     {
+        //PlayerPrefs.DeleteAll(); // testMode
         loot lootuha = new loot("hueta", 0,1);
-        lootsToDefaultSpawnFloor2 = new loot[9999];
+        lootsToDefaultSpawnFloor2 = new loot[1];
         lootsToDefaultSpawnFloor2[0] = lootuha;
         player.currentFloorNumber = defaultFloorNumber;
         floor2 = new floor(2, 5, tileToSpawnOnFloor2, 92-1, lootsToDefaultSpawnFloor2);
@@ -71,6 +73,15 @@ public class game : MonoBehaviour
     }
 
 
+    public void battleStart()
+    {
+        battle.SetActive(true);
+        battle.GetComponent<battleLogic>().Awake();
+    }
+    public void battleEnd()
+    {
+        battle.SetActive(false);
+    }
 
 
     public GameObject getTileToSpawn()

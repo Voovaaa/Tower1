@@ -74,8 +74,12 @@ public class saveLogic : MonoBehaviour
     public static void createProfile(string profileName) { setProfileSave(defaultProfileSaveData); }
     public static void InitializeDefaultProfileSaveData()
     {
-        string saveKeysString = "hpMax;";
-        string saveValuesString = "10;";
+        string saveKeysString = "hpMax;" +
+            "armor;" +
+            "damage;";
+        string saveValuesString = "10;" +
+            "0;" +
+            "1;";
 
         saveKeys = saveKeysString.Split(";");
         defaultSaveValues = saveValuesString.Split(";");
@@ -86,7 +90,6 @@ public class saveLogic : MonoBehaviour
             defaultProfileSaveData.Add(saveKeys[i], defaultSaveValues[i]);
         }
 
-        //defaultFloor = new game.floor(-1);
 
     }
     public static void setProfileSaveValue(string key, string value)
@@ -107,6 +110,9 @@ public class saveLogic : MonoBehaviour
     {
         return getProfileSaveValue($"floor {floorNumber} {key}");
     }
+
+
+
 
     public static game.loot[] getAllLoot ()
     {

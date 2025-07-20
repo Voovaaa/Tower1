@@ -754,5 +754,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be8f34066a053364d82e8b1e590d5940, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scripts: {fileID: 0}
   status: unknown
   currentMarkImageName: question mark

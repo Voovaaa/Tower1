@@ -17,7 +17,7 @@ public class player : MonoBehaviour
     public static game.loot[] inventory;
 
 
-    private void Awake()
+    public void Awake()
     {
         saveLogic.InitializeDefaultProfileSaveData();
         profileData = saveLogic.getProfileSaveData();
@@ -25,6 +25,15 @@ public class player : MonoBehaviour
         currentTile.GetComponent<tile>().setStatus("player");
     }
 
+    public static void setProfileValue(string key, string value)
+    {
+        profileData[key] = value;
+        saveLogic.setProfileSaveValue(key, value);
+    }
+    public static string getProfileValue(string key)
+    {
+        return profileData[key];
+    }
 
     public static void moveToTile(GameObject newTile)
     {
@@ -33,21 +42,5 @@ public class player : MonoBehaviour
         currentTile.GetComponent<tile>().setStatus("player");
     }
 
-    public static void gotXp(float xpGot)
-    {
-        float xp = float.Parse(saveLogic.getProfileSaveValue("xp"));
-        xp += xpGot;
-        if (xp > 1)
-        {
-            xp -= 1;
-            lvlUp();
-        }
-        saveLogic.setProfileSaveValue("xp", xp.ToString());
-    }
-    public static void lvlUp()
-    {
-        int lvl = int.Parse(saveLogic.getProfileSaveValue("lvl"));
-        lvl += 1;
-        saveLogic.setProfileSaveValue("lvl", lvl.ToString());
-    }
+    
 }
