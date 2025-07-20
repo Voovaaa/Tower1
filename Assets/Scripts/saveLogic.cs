@@ -1,9 +1,20 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class saveLogic : MonoBehaviour
 {
+
+    public static string[] saveKeys;
+    public static string[] defaultSaveValues;
+    public static Dictionary<string, string> defaultProfileSaveData;
+
+    public static Dictionary<string, string> currentProfileSaveData;
+
+    public static game.loot[] allLoots;
+
     public static void setSettingsSave(bool isFullscreen, float volume, int resolutionOption)
     {
         PlayerPrefs.SetString("isFullscreen", isFullscreen.ToString());
@@ -30,4 +41,107 @@ public class saveLogic : MonoBehaviour
         }
         return settingsSave;
     }
+
+
+    public static void setProfileSave(Dictionary<string, string> profileData)
+    {
+        string profileName = PlayerPrefs.GetString("currentProfileName");
+        foreach (KeyValuePair<string, string> dataPair in profileData)
+        {
+            setProfileSaveValue(dataPair.Key, dataPair.Value);
+            //PlayerPrefs.SetString($"{profileName} {dataPair.Key}", dataPair.Value);
+        }
+        //PlayerPrefs.Save();
+    }
+    public static Dictionary<string, string> getProfileSaveData()
+    {
+        string profileName = PlayerPrefs.GetString("currentProfileName");
+        Dictionary<string, string> profileSaveData = new Dictionary<string, string>();
+        if (PlayerPrefs.HasKey($"{profileName} {saveKeys[saveKeys.Length - 1]}"))
+        {
+            for (int i = 0; i < saveKeys.Length; i++)
+            {
+                profileSaveData.Add(saveKeys[i], getProfileSaveValue(saveKeys[i]));
+            }
+        }
+        else
+        {
+            createProfile(profileName);
+            profileSaveData = getProfileSaveData();
+        }
+        return profileSaveData;
+    }
+    public static void createProfile(string profileName) { setProfileSave(defaultProfileSaveData); }
+    public static void InitializeDefaultProfileSaveData()
+    {
+        string saveKeysString = "hpMax;" +
+            "armor;" +
+            "damage;";
+        string saveValuesString = "10;" +
+            "0;" +
+            "1;";
+
+        saveKeys = saveKeysString.Split(";");
+        defaultSaveValues = saveValuesString.Split(";");
+
+        defaultProfileSaveData = new Dictionary<string, string>();
+        for (int i = 0; i < saveKeys.Length; i++)
+        {
+            defaultProfileSaveData.Add(saveKeys[i], defaultSaveValues[i]);
+        }
+
+
+    }
+    public static void setProfileSaveValue(string key, string value)
+    {
+        PlayerPrefs.SetString($"{PlayerPrefs.GetString("currentProfileName")} {key}", value);
+        PlayerPrefs.Save();
+    }
+    public static string getProfileSaveValue(string key)
+    {
+        return PlayerPrefs.GetString($"{PlayerPrefs.GetString("currentProfileName")} {key}");
+    }
+
+    public static void setFloorSaveValue(int floorNumber, string key, string value)
+    {
+        setProfileSaveValue($"floor {floorNumber} {key}", value);
+    }
+    public static string getFloorSaveValue(int floorNumber, string key)
+    {
+        return getProfileSaveValue($"floor {floorNumber} {key}");
+    }
+
+
+
+
+    public static game.loot[] getAllLoot ()
+    {
+        return null;
+    }
+    public static game.loot getLootInstance(string name)
+    {
+        return null;
+    }
+    public static void lootFound()
+    {
+        //saveLogic.setInventorySaveValue(floorNumber, $"LOOT{lootInstance.name}", "true");
+    }
+    public static void setInventorySaveValue(string lootName, bool isFound)
+    {
+        setProfileSaveValue($"LOOT{lootName}", isFound.ToString());
+    }
+    public static void initializeAllLootsArray()
+    {
+        game.loot[] allLoot = new game.loot[999];
+        game.loot huetaShield = new game.loot("hueta", 1, 3);
+        allLoot[0] = huetaShield;
+    }
+
+
+
+
+
+    
+
+
 }

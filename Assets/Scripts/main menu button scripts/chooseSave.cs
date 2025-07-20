@@ -8,7 +8,7 @@ public class chooseSave : MonoBehaviour
     public int saveNumber;
     public void onClick()
     {
-        // load save file
+        PlayerPrefs.SetString("currentProfileName", "profile " + saveNumber.ToString());
         SceneManager.LoadScene("Game");
         Debug.Log($"loaded save {saveNumber}");
     }

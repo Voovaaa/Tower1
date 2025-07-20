@@ -14,13 +14,43 @@ public class mainMenu : MonoBehaviour
     public Slider volumeSlider;
     public TMP_Dropdown resolutionsDropDown;
 
-    static public Resolution[] resolutions;
-    static public AudioMixer audioMixer;
+    public static Resolution[] resolutions;
+    public static AudioMixer audioMixer;
     private void Awake()
     {
-        settingsInitialization();
+        settingsInitializationOnAwake();
     }
+
+
     private void Start()
+    {
+        settingsInitializationOnStart();
+    }
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    void settingsInitializationOnAwake()
+    {
+        resolutions = Screen.resolutions;
+        audioMixer = audioMixerInstance;
+        settings.settingsSave = saveLogic.getSettingsSave();
+        settings.isFullscreen = bool.Parse(settings.settingsSave["isFullscreen"]);
+        settings.volumeValue = float.Parse(settings.settingsSave["volume"]);
+        settings.resolutionOption = int.Parse(settings.settingsSave["resolutionOption"]);
+    }
+    void settingsInitializationOnStart()
     {
         if (!settings.isFullscreen)
         {
@@ -32,15 +62,5 @@ public class mainMenu : MonoBehaviour
 
         resolutionsDropDown.value = settings.resolutionOption;
     }
-    void settingsInitialization()
-    {
-        resolutions = Screen.resolutions;
-        audioMixer = audioMixerInstance;
-        settings.settingsSave = saveLogic.getSettingsSave();
-        settings.isFullscreen = bool.Parse(settings.settingsSave["isFullscreen"]);
-        settings.volumeValue = float.Parse(settings.settingsSave["volume"]);
-        settings.resolutionOption = int.Parse(settings.settingsSave["resolutionOption"]);
-    }
-    
 }
 
