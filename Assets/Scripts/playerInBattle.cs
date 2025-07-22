@@ -12,14 +12,14 @@ public class playerInBattle : MonoBehaviour
     public float damage;
     public bool alive;
     public TMP_Text hpText;
-    public void Awake()
+
+    public void startBattle()
     {
         hpMax = float.Parse(player.getProfileValue("hpMax"));
         hpCurrent = hpMax;
         armor = int.Parse(player.getProfileValue("armor"));
         damage = float.Parse(player.getProfileValue("damage"));
         alive = true;
-        Debug.Log("player awake");
 
     }
 
@@ -30,7 +30,6 @@ public class playerInBattle : MonoBehaviour
 
     public void attack()
     {
-        Debug.Log($"{hpCurrent}player attacks");
         battle.GetComponent<battleLogic>().enemyInstance.GetComponent<enemy>().attacked(damage);
     }
     public void attacked(float damage)

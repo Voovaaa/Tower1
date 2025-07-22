@@ -5,21 +5,13 @@ using UnityEngine;
 
 public class battleLogic : MonoBehaviour
 {
-    public GameObject floor;
     public GameObject scripts;
+
+
+    private GameObject floor;
     public GameObject playerInstance;
     public GameObject enemyInstance;
-    public string turn;
-    public void Awake()
-    {
-        playerInstance.GetComponent<playerInBattle>().Awake();
-        enemyInstance.GetComponent<enemy>().Awake();
-        startBattle();
-        turn = "player";
-        InvokeRepeating("attack", 1f, 1f);
-        Debug.Log("battle awake");
-    }
-
+    private string turn;
     public void attack()
     {
         if (playerInstance.GetComponent<playerInBattle>().alive && enemyInstance.GetComponent<enemy>().alive)
@@ -41,12 +33,22 @@ public class battleLogic : MonoBehaviour
 
     public void startBattle()
     {
+        floor = scripts.GetComponent<game>().currentFloor;
+        enemyInstance = transform.Find("Enemy").gameObject;
+        playerInstance = transform.Find("Player").gameObject;
         floor.SetActive(false);
         playerInstance.SetActive(true);
         enemyInstance.SetActive(true);
+        //create enemy instance, take enemy name from floor save
+
+        playerInstance.GetComponent<playerInBattle>().startBattle();
+        enemyInstance.GetComponent<enemy>().startBattle();
+        turn = "player";
+        InvokeRepeating("attack", 1f, 1f);
     }
     public void endBattle()
     {
+        CancelInvoke("attack");
         floor.SetActive(true);
         playerInstance.SetActive(false);
         enemyInstance.SetActive(false);
