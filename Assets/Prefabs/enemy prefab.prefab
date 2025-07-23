@@ -145,7 +145,7 @@ GameObject:
   - component: {fileID: 8819024350473587263}
   - component: {fileID: 2705466020446677610}
   m_Layer: 5
-  m_Name: enemy attack
+  m_Name: attack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -273,15 +273,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0077ab46151ac2d4d9c19f6548f8e59c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  battle: {fileID: 0}
-  enemyName: 
-  playerInstance: {fileID: 0}
-  hpMax: 0
-  hpCurrent: 0
-  armor: 0
-  damage: 0
-  alive: 0
   hpText: {fileID: 5332576502389347221}
+  wolfSpriteIdle: {fileID: 21300000, guid: fb47ce3e475cbfc40aa17e5ccb4da2bb, type: 3}
+  wolfSpriteAttack: {fileID: 21300000, guid: 5bf1a25f8be100f49b449fda8549cfec, type: 3}
+  circleSprite: {fileID: -2413806693520163455, guid: 0a8b08deb3eca9247b893b031183d9dc, type: 3}
+  alive: 0
+  currentSpriteIdle: {fileID: 0}
+  currentSpriteAttack: {fileID: 0}
 --- !u!1 &8854601039140098728
 GameObject:
   m_ObjectHideFlags: 0
@@ -293,7 +291,7 @@ GameObject:
   - component: {fileID: 3983251434336046636}
   - component: {fileID: 4529011291065567207}
   m_Layer: 5
-  m_Name: enemy idle
+  m_Name: idle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

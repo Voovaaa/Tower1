@@ -1,8 +1,12 @@
 using System.Collections.Generic;
+using UnityEditor.SearchService;
 using UnityEngine;
 
 public class game : MonoBehaviour
 {
+    public GameObject backgroundFloor;
+    public GameObject backgroundBattle;
+
     public GameObject currentFloor;
     public GameObject battle;
 
@@ -12,20 +16,19 @@ public class game : MonoBehaviour
     public static string enemyToSpawnName;
     public static floor floor2;
 
-    private loot[] lootsToDefaultSpawnFloor2; // переделать в список
+    private List<loot> lootToDefaultSpawnFloor2;
     private loot lootuha;
     private void Awake()
     {
-        enemyToSpawnName = "wolf"; // defaultName
         PlayerPrefs.DeleteAll(); // testMode
+
+        saveLogic.initializeAllLoot();
 
         Dictionary<string, string> enemiesNamountFloor2 = new Dictionary<string, string>();
         enemiesNamountFloor2["wolf"] = "5";
         enemiesNamountFloor2["circle"] = "1";
-        loot lootuha = new loot("hueta", 0, 1);
-        lootsToDefaultSpawnFloor2 = new loot[1];
-        lootsToDefaultSpawnFloor2[0] = lootuha;
-        floor2 = new floor(2, tileToSpawnOnFloor2, 92 - 1, lootsToDefaultSpawnFloor2, enemiesNamountFloor2);
+        lootToDefaultSpawnFloor2 = saveLogic.floorNloot[2];
+        floor2 = new floor(2, tileToSpawnOnFloor2, 92 - 1, lootToDefaultSpawnFloor2, enemiesNamountFloor2);
 
 
         player.currentFloorNumber = defaultFloorNumber;
@@ -39,36 +42,80 @@ public class game : MonoBehaviour
         public int enemiesAmount;
         public bool wasHere;
         public int unknownTilesAmount;
-        public loot[] availableLoot; // all loot not from enemies, from unknown tiles
+        public List<loot> availableLoot; // all loot not from enemies, from unknown tiles
         public Dictionary<string, string> enemiesNamounts;
 
-        public floor(int floorNumber, GameObject tileToSpawn, int unknownTilesAmount, loot[] availableLoot, Dictionary<string, string> enemiesNamounts) // floor number and default floor data
+        public floor(int floorNumber, GameObject tileToSpawn, int unknownTilesAmount, List<loot> availableLoot, Dictionary<string, string> enemiesNamounts) // floor number and default floor data
         {
             this.floorNumber = floorNumber;
             this.unknownTilesAmount = unknownTilesAmount;
             string wasHereString = saveLogic.getFloorSaveValue(floorNumber, "wasHere");
             if (wasHereString != "" && bool.Parse(wasHereString)) //load floor save
             {
+                enemiesAmount = int.Parse(saveLogic.getFloorSaveValue(floorNumber, "enemiesAmount"));
+
+                unknownTilesAmount = int.Parse(saveLogic.getFloorSaveValue(floorNumber, "unknownTilesAmount"));
+
+                foreach (loot lootInstance in availableLoot)
+                {
+                    if (saveLogic.getFloorSaveValue(floorNumber, $"loot {lootInstance.name}") == "true")
+                    {
+                        this.availableLoot.Add(lootInstance);
+                    }
+                }
+
+                foreach (KeyValuePair<string, string> kvp in enemiesNamounts)
+                {
+                    if (int.Parse(saveLogic.getFloorSaveValue(floorNumber, $"enemy {kvp.Key}")) > 0)
+                    {
+                        this.enemiesNamounts[kvp.Key] = saveLogic.getFloorSaveValue(floorNumber, $"enemy {kvp.Key}");
+                    }
+                }
             }
             else //load default data if wasnt on floor
             {
                 wasHere = false;
                 saveLogic.setFloorSaveValue(floorNumber, "wasHere", wasHere.ToString());
+
                 this.enemiesNamounts = enemiesNamounts;
                 foreach (KeyValuePair<string, string> kvp in enemiesNamounts)
                 {
                     saveLogic.setFloorSaveValue(floorNumber, $"enemy {kvp.Key}", kvp.Value);
                 }
+
                 enemiesAmount = calculateEnemiesAmount();
                 saveLogic.setFloorSaveValue(floorNumber, "enemiesAmount", enemiesAmount.ToString());
+
                 this.availableLoot = availableLoot;
                 foreach (loot lootInstance in availableLoot)
                 {
-                    saveLogic.setFloorSaveValue(floorNumber, $"LOOT{lootInstance.name}", "true");
+                    saveLogic.setFloorSaveValue(floorNumber, $"loot {lootInstance.name}", "true");
                 }
+
+                this.unknownTilesAmount = unknownTilesAmount;
+                saveLogic.setFloorSaveValue(floorNumber, "unknownTilesAmount", unknownTilesAmount.ToString());
             }
             tileToSpawnOn = tileToSpawn;
         }
+        public void decrementUnknownTiles()
+        {
+            unknownTilesAmount -= 1;
+            saveLogic.setFloorSaveValue(floorNumber, "unknownTilesAmount", unknownTilesAmount.ToString());
+        }
+        public void enemyDied(string enemyName)
+        {
+            enemiesNamounts[enemyName] = (int.Parse(enemiesNamounts[enemyName]) - 1).ToString();
+            saveLogic.setFloorSaveValue(floorNumber, $"enemy {enemyName}", enemiesNamounts[enemyName]);
+            enemiesAmount -= 1;
+            saveLogic.setFloorSaveValue(floorNumber, "enemiesAmount", enemiesAmount.ToString());
+        }
+        public void lootTaken(loot lootInstance)
+        {
+            availableLoot.Remove(lootInstance);
+            saveLogic.setFloorSaveValue(floorNumber, $"loot {lootInstance.name}", "false");
+        }
+
+
         public int calculateEnemiesAmount()
         {
             int amount = 0;
@@ -97,11 +144,15 @@ public class game : MonoBehaviour
 
     public void battleStart()
     {
+        backgroundFloor.SetActive(false);
+        backgroundBattle.SetActive(true);
         battle.SetActive(true);
         battle.GetComponent<battleLogic>().startBattle();
     }
     public void battleEnd()
     {
+        backgroundFloor.SetActive(true);
+        backgroundBattle.SetActive(false);
         battle.SetActive(false);
     }
 

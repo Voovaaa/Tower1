@@ -11,7 +11,8 @@ public class enemy : MonoBehaviour
     public Sprite circleSprite;
 
     public bool alive;
-
+    public Sprite currentSpriteIdle;
+    public Sprite currentSpriteAttack;
 
 
     private GameObject battle;
@@ -32,27 +33,27 @@ public class enemy : MonoBehaviour
     }
     public void initializeEnemy()
     {
-        enemySpriteAttackName = "enemy attack";
-        enemySpriteIdleName = "enemy idle";
         switch (game.enemyToSpawnName)
         {
             case "wolf":
                 hpMax = 3;
                 armor = 0;
                 damage = 1;
-                transform.Find(enemySpriteIdleName).GetComponent<SpriteRenderer>().sprite = wolfSpriteIdle;
-                transform.Find(enemySpriteAttackName).GetComponent<SpriteRenderer>().sprite = wolfSpriteAttack;
+                currentSpriteIdle = wolfSpriteIdle;
+                currentSpriteAttack = wolfSpriteAttack;
                 break;
             case "circle":
                 hpMax = 2;
                 armor = 0;
                 damage = 0;
-                transform.Find(enemySpriteIdleName).GetComponent<SpriteRenderer>().sprite = circleSprite;
-                transform.Find(enemySpriteAttackName).GetComponent<SpriteRenderer>().sprite = circleSprite;
+                currentSpriteIdle = circleSprite;
+                currentSpriteAttack = circleSprite;
                 break;
             default:
                 break;
         }
+        transform.Find("idle").GetComponent<SpriteRenderer>().sprite = currentSpriteIdle;
+        transform.Find("attack").GetComponent<SpriteRenderer>().sprite = currentSpriteAttack;
     }
 
     private void Update()

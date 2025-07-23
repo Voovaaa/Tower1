@@ -85,7 +85,7 @@ public class tile : MonoBehaviour
 
     public void battleStart() // выбрать энеми из доступных на этаже
     {
-        game.enemyToSpawnName = getRandomEnemyToSpawn(player.currentFloor.enemiesNamounts);
+        game.enemyToSpawnName = getRandomEnemyNameToSpawn(player.currentFloor.enemiesNamounts);
         if (game.enemyToSpawnName == "") { return; }
         scripts.GetComponent<game>().battleStart();
         Debug.Log("Butle");
@@ -118,7 +118,7 @@ public class tile : MonoBehaviour
         markImage.SetActive(true);
     }
 
-    public static string getRandomEnemyToSpawn(Dictionary<string, string> dict)
+    public static string getRandomEnemyNameToSpawn(Dictionary<string, string> dict)
     {
 
         int valuesAmount = dict.Count;
@@ -134,16 +134,12 @@ public class tile : MonoBehaviour
             }
             if (i == randomNumber)
             {
-
                 keyName = kvp.Key;
                 break;
             }
 
             i++;
         }
-
-        Debug.Log(randomNumber);
-        Debug.Log(i);
         return keyName;
     }
 }

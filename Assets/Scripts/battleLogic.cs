@@ -11,7 +11,9 @@ public class battleLogic : MonoBehaviour
     private GameObject floor;
     public GameObject playerInstance;
     public GameObject enemyInstance;
+    private float repeatAttackTime;
     private string turn;
+    private GameObject creatureToAnimate;
     public void attack()
     {
         if (playerInstance.GetComponent<playerInBattle>().alive && enemyInstance.GetComponent<enemy>().alive)
@@ -20,19 +22,41 @@ public class battleLogic : MonoBehaviour
             {
                 playerInstance.GetComponent<playerInBattle>().attack();
                 turn = "enemy";
+                creatureToAnimate = playerInstance;
+                doAttackAnimation();
             }
             else
             {
                 enemyInstance.GetComponent<enemy>().attack();
                 turn = "player";
+                creatureToAnimate = enemyInstance;
+                doAttackAnimation();
             }
-            Debug.Log($"now {turn} turn");
         }
         else { endBattle(); }
     }    
 
+
+    public void doAttackAnimation()
+    {
+        GameObject idleSprite = creatureToAnimate.transform.Find("idle").gameObject;
+        GameObject attackSprite = creatureToAnimate.transform.Find("attack").gameObject;
+        if (idleSprite.activeInHierarchy)
+        {
+            idleSprite.SetActive(false);
+            attackSprite.SetActive(true);
+            Invoke("doAttackAnimation", repeatAttackTime/3); // i like magic numbers, so what?
+        }
+        else
+        {
+            idleSprite.SetActive(true);
+            attackSprite.SetActive(false);
+        }
+    }
     public void startBattle()
     {
+        repeatAttackTime = 1f;
+
         floor = scripts.GetComponent<game>().currentFloor;
         enemyInstance = transform.Find("Enemy").gameObject;
         playerInstance = transform.Find("Player").gameObject;
@@ -44,7 +68,7 @@ public class battleLogic : MonoBehaviour
         playerInstance.GetComponent<playerInBattle>().startBattle();
         enemyInstance.GetComponent<enemy>().startBattle();
         turn = "player";
-        InvokeRepeating("attack", 1f, 1f);
+        InvokeRepeating("attack", repeatAttackTime, repeatAttackTime);
     }
     public void endBattle()
     {
