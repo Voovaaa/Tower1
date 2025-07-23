@@ -5,28 +5,57 @@ using UnityEngine;
 
 public class enemy : MonoBehaviour
 {
-    public GameObject battle;
-    public string enemyName;
-    public GameObject playerInstance;
-    public float hpMax;
-    public float hpCurrent;
-    public int armor;
-    public float damage;
-    public bool alive;
     public TMP_Text hpText;
+    public Sprite wolfSpriteIdle;
+    public Sprite wolfSpriteAttack;
+    public Sprite circleSprite;
 
-    public void Awake()
+    public bool alive;
+    public Sprite currentSpriteIdle;
+    public Sprite currentSpriteAttack;
+
+
+    private GameObject battle;
+    private float hpMax;
+    private float hpCurrent;
+    private int armor;
+    private float damage;
+    private string enemySpriteIdleName;
+    private string enemySpriteAttackName;
+
+    public void startBattle()
     {
-        hpMax = 3;
-        armor = 0;
-        damage = 1;
+        battle = transform.parent.gameObject;
+        initializeEnemy();
 
         alive = true;
-        // load default data from enemy save by name notyetamigo
         hpCurrent = hpMax;
-        Debug.Log("enemy awake");
-
     }
+    public void initializeEnemy()
+    {
+        switch (game.enemyToSpawnName)
+        {
+            case "wolf":
+                hpMax = 3;
+                armor = 0;
+                damage = 1;
+                currentSpriteIdle = wolfSpriteIdle;
+                currentSpriteAttack = wolfSpriteAttack;
+                break;
+            case "circle":
+                hpMax = 2;
+                armor = 0;
+                damage = 0;
+                currentSpriteIdle = circleSprite;
+                currentSpriteAttack = circleSprite;
+                break;
+            default:
+                break;
+        }
+        transform.Find("idle").GetComponent<SpriteRenderer>().sprite = currentSpriteIdle;
+        transform.Find("attack").GetComponent<SpriteRenderer>().sprite = currentSpriteAttack;
+    }
+
     private void Update()
     {
         hpText.text = $"{hpCurrent} / {hpMax}";
@@ -34,7 +63,6 @@ public class enemy : MonoBehaviour
 
     public void attack()
     {
-        Debug.Log($"{hpCurrent}enemy attacks");
         battle.GetComponent<battleLogic>().playerInstance.GetComponent<playerInBattle>().attacked(damage);
     }
     public void attacked(float damage)
@@ -53,6 +81,7 @@ public class enemy : MonoBehaviour
     {
         alive = false;
         player.currentFloor.enemiesAmount -= 1;
-        saveLogic.setFloorSaveValue(player.currentFloorNumber, "enemiesAmount", player.currentFloor.enemiesAmount.ToString());
+        player.currentFloor.enemiesNamounts[game.enemyToSpawnName] = (int.Parse(player.currentFloor.enemiesNamounts[game.enemyToSpawnName]) - 1).ToString();
+        saveLogic.setFloorSaveValue(player.currentFloorNumber, "enemiesAmount", player.currentFloor.enemiesAmount.ToString()); // убрать из сейва этого врага
     }
 }

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -35,7 +34,7 @@ public class tile : MonoBehaviour
         //        break;
         //}
     }
-    
+
     public void doTileMethod() // onclick 
     {
         switch (status)
@@ -59,7 +58,6 @@ public class tile : MonoBehaviour
         Vector2 clickedTilePosition = transform.position;
         Vector2 playerTilePosition = player.currentTile.transform.position;
         float tilesDistance = Vector2.Distance(clickedTilePosition, playerTilePosition);
-        Debug.Log(tilesDistance);
         if (tilesDistance > 1.1f)
         {
             return;
@@ -74,26 +72,25 @@ public class tile : MonoBehaviour
             battleStart();
         }
         player.currentFloor.unknownTilesAmount -= 1;
-        Debug.Log("unknownMethod");
 
         player.moveToTile(transform.gameObject);
     }
     public void wasHereTileButton()
     {
-        Debug.Log("wasHereMethod");
-
         player.moveToTile(transform.gameObject);
     }
     public void playerTileButton()
     {
-        Debug.Log("playerMethod");
     }
 
-    public void battleStart()
+    public void battleStart() // выбрать энеми из доступных на этаже
     {
+        game.enemyToSpawnName = getRandomEnemyNameToSpawn(player.currentFloor.enemiesNamounts);
+        if (game.enemyToSpawnName == "") { return; }
         scripts.GetComponent<game>().battleStart();
         Debug.Log("Butle");
     }
+
 
     public void setMarkImage()
     {
@@ -119,5 +116,30 @@ public class tile : MonoBehaviour
                 break;
         }
         markImage.SetActive(true);
+    }
+
+    public static string getRandomEnemyNameToSpawn(Dictionary<string, string> dict)
+    {
+
+        int valuesAmount = dict.Count;
+        int randomNumber = Random.Range(0, valuesAmount);
+        string keyName = "";
+
+        int i = 0;
+        foreach (KeyValuePair<string, string> kvp in dict)
+        {
+            if (kvp.Value == "0")
+            {
+                i -= 1;
+            }
+            if (i == randomNumber)
+            {
+                keyName = kvp.Key;
+                break;
+            }
+
+            i++;
+        }
+        return keyName;
     }
 }
