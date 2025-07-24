@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-using UnityEditor.SearchService;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class game : MonoBehaviour
@@ -13,6 +14,8 @@ public class game : MonoBehaviour
     public int defaultFloorNumber;
     public GameObject tileToSpawnOnFloor2;
 
+    public GameObject ui;
+
     public static string enemyToSpawnName;
     public static floor floor2;
 
@@ -20,9 +23,10 @@ public class game : MonoBehaviour
     private loot lootuha;
     private void Awake()
     {
-        PlayerPrefs.DeleteAll(); // testMode
+        //PlayerPrefs.DeleteAll(); // testMode
 
         saveLogic.initializeAllLoot();
+        player.initialize(transform.gameObject);
 
         Dictionary<string, string> enemiesNamountFloor2 = new Dictionary<string, string>();
         enemiesNamountFloor2["wolf"] = "5";
@@ -33,6 +37,12 @@ public class game : MonoBehaviour
 
         player.currentFloorNumber = defaultFloorNumber;
         player.currentFloor = floor2; // change it later
+    }
+
+    private void Update() // убрать всё из апдейта нахуй, да хотя похуй лан
+    {
+        ui.transform.Find("armor text").GetComponent<TMP_Text>().text = $"{player.armor.name.FirstCharacterToUpper()}: {player.calculateArmorValue()} armor.";
+        ui.transform.Find("weapon text").GetComponent<TMP_Text>().text = $"{player.weapon.name.FirstCharacterToUpper()}: {player.calculateDamageValue()} damage.";
     }
 
     public class floor
@@ -141,9 +151,27 @@ public class game : MonoBehaviour
         }
     }
 
-
+    public void notify(string notificationText)
+    {
+        ui.transform.Find("notification text").GetComponent<TMP_Text>().text = notificationText;
+        setNotificationActive();
+        Invoke("setNotificationActive", 2f); // i love magic numbers
+    }
+    private void setNotificationActive()
+    {
+        GameObject txt = ui.transform.Find("notification text").gameObject;
+        if (txt.activeInHierarchy)
+        {
+            txt.SetActive(false);
+        }
+        else
+        {
+            txt.SetActive(true);
+        }
+    }
     public void battleStart()
     {
+        ui.SetActive(false);
         backgroundFloor.SetActive(false);
         backgroundBattle.SetActive(true);
         battle.SetActive(true);
@@ -151,6 +179,7 @@ public class game : MonoBehaviour
     }
     public void battleEnd()
     {
+        ui.SetActive(true);
         backgroundFloor.SetActive(true);
         backgroundBattle.SetActive(false);
         battle.SetActive(false);

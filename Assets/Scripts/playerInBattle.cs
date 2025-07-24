@@ -17,10 +17,9 @@ public class playerInBattle : MonoBehaviour
     {
         hpMax = float.Parse(player.getProfileValue("hpMax"));
         hpCurrent = hpMax;
-        armor = int.Parse(player.getProfileValue("armor"));
-        damage = float.Parse(player.getProfileValue("damage"));
+        armor = player.calculateArmorValue();
+        damage = player.calculateDamageValue();
         alive = true;
-
     }
 
     private void Update()

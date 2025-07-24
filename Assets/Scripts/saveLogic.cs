@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ public class saveLogic : MonoBehaviour
 
     public static List<game.loot> allLoot;
     public static Dictionary<int, List<game.loot>> floorNloot;
+    public static Dictionary<string, game.loot> nameNloot;
 
     public static void setSettingsSave(bool isFullscreen, float volume, int resolutionOption)
     {
@@ -50,9 +52,7 @@ public class saveLogic : MonoBehaviour
         foreach (KeyValuePair<string, string> dataPair in profileData)
         {
             setProfileSaveValue(dataPair.Key, dataPair.Value);
-            //PlayerPrefs.SetString($"{profileName} {dataPair.Key}", dataPair.Value);
         }
-        //PlayerPrefs.Save();
     }
     public static Dictionary<string, string> getProfileSaveData()
     {
@@ -77,8 +77,12 @@ public class saveLogic : MonoBehaviour
     {
         string saveKeysString = "hpMax;" +
             "armor;" +
+            "weapon;" +
+            "armor value;" +
             "damage;";
         string saveValuesString = "10;" +
+            "underwear;" +
+            "fists;" +
             "0;" +
             "1;";
 
@@ -115,34 +119,43 @@ public class saveLogic : MonoBehaviour
 
 
 
-    public static List<game.loot> getAllLoot ()
-    {
-        return null;
-    }
     public static game.loot getLootInstance(string name)
     {
-        return null;
+        return nameNloot[name];
     }
-    public static void lootFound()
+    public static string getInventorySaveValue(string equipment)
     {
-        //saveLogic.setInventorySaveValue(floorNumber, $"LOOT{lootInstance.name}", "true");
+        return getProfileSaveValue(equipment);
     }
-    public static void setInventorySaveValue(string lootName, bool isFound)
+    public static void setInventorySaveValue(string equipment, string lootName) // equipment - armor/weapon
     {
-        setProfileSaveValue($"LOOT{lootName}", isFound.ToString());
+        setProfileSaveValue(equipment, lootName);
     }
     public static void initializeAllLoot()
     {
         allLoot = new List<game.loot>();
         floorNloot = new Dictionary<int, List<game.loot>>();
+        nameNloot = new Dictionary<string, game.loot>();
+
+        game.loot fists = new game.loot("fists", 1, 0);
+        game.loot underwear = new game.loot("underwear", 0, 0);
+        allLoot.Add(fists);
+        allLoot.Add(underwear);
+        nameNloot["fists"] = fists;
+        nameNloot["underwear"] = underwear;
 
         floorNloot[2] = new List<game.loot>();
-        game.loot woodenClub = new game.loot("woodenClub", 1, 1);
-        allLoot.Add(woodenClub);
-        floorNloot[2].Add(woodenClub);
-        game.loot tShirt = new game.loot("tShirt", 0, 1);
-        allLoot.Add(tShirt);
-        floorNloot[2].Add(tShirt);
+        game.loot woodenClub = new game.loot("wooden club", 2, 0);
+        addLootToData(2, woodenClub);
+        game.loot tShirt = new game.loot("tshirt and shorts", 0, 1);
+        addLootToData(2, tShirt);
+
+        static void addLootToData(int floorNumber, game.loot loot)
+        {
+            allLoot.Add(loot);
+            floorNloot[floorNumber].Add(loot);
+            nameNloot[loot.name] = loot;
+        }
     }
 
 
