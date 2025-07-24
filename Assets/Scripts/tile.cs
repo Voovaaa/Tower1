@@ -6,6 +6,7 @@ public class tile : MonoBehaviour
     public GameObject scripts;
     public string status; // unknown, wasHere, player
     public string currentMarkImageName;
+    public float chanceToLoot = 0.1f;
 
     private void Start()
     {
@@ -71,7 +72,12 @@ public class tile : MonoBehaviour
         {
             battleStart();
         }
-        player.currentFloor.unknownTilesAmount -= 1;
+        player.currentFloor.decrementUnknownTiles();
+
+        if (isGetLoot())
+        {
+            player.foundLoot(getRandomLoot());
+        }
 
         player.moveToTile(transform.gameObject);
     }
@@ -81,6 +87,30 @@ public class tile : MonoBehaviour
     }
     public void playerTileButton()
     {
+    }
+
+    public bool isGetLoot()
+    {
+        List<game.loot> availableLoot = player.currentFloor.availableLoot;
+        int unknownTilesAmount = player.currentFloor.unknownTilesAmount;
+        if (availableLoot.Count <= 0)
+        {
+            return false;
+        }
+        if (unknownTilesAmount == availableLoot.Count)
+        {
+            return true;
+        }
+        if (Random.value <= chanceToLoot) 
+        {
+            return true;
+        }
+        return false;
+    }
+    public game.loot getRandomLoot()
+    {
+        game.loot lootToReturn = player.currentFloor.availableLoot[Random.Range(0, player.currentFloor.availableLoot.Count)];
+        return lootToReturn;
     }
 
     public void battleStart() // выбрать энеми из доступных на этаже

@@ -14,7 +14,7 @@ public class enemy : MonoBehaviour
     public Sprite currentSpriteIdle;
     public Sprite currentSpriteAttack;
 
-
+    
     private GameObject battle;
     private float hpMax;
     private float hpCurrent;
@@ -36,9 +36,9 @@ public class enemy : MonoBehaviour
         switch (game.enemyToSpawnName)
         {
             case "wolf":
-                hpMax = 3;
+                hpMax = 4;
                 armor = 0;
-                damage = 1;
+                damage = 2;
                 currentSpriteIdle = wolfSpriteIdle;
                 currentSpriteAttack = wolfSpriteAttack;
                 break;
@@ -80,8 +80,6 @@ public class enemy : MonoBehaviour
     public void die()
     {
         alive = false;
-        player.currentFloor.enemiesAmount -= 1;
-        player.currentFloor.enemiesNamounts[game.enemyToSpawnName] = (int.Parse(player.currentFloor.enemiesNamounts[game.enemyToSpawnName]) - 1).ToString();
-        saveLogic.setFloorSaveValue(player.currentFloorNumber, "enemiesAmount", player.currentFloor.enemiesAmount.ToString()); // убрать из сейва этого врага
+        player.currentFloor.enemyDied(game.enemyToSpawnName);
     }
 }
