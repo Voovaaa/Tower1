@@ -20,6 +20,7 @@ public class enemy : MonoBehaviour
     private float hpCurrent;
     private int armor;
     private float damage;
+    private float xp;
     private string enemySpriteIdleName;
     private string enemySpriteAttackName;
 
@@ -39,6 +40,7 @@ public class enemy : MonoBehaviour
                 hpMax = 4;
                 armor = 0;
                 damage = 2;
+                xp = 0.3f;
                 currentSpriteIdle = wolfSpriteIdle;
                 currentSpriteAttack = wolfSpriteAttack;
                 break;
@@ -46,6 +48,7 @@ public class enemy : MonoBehaviour
                 hpMax = 2;
                 armor = 0;
                 damage = 0;
+                xp = 0.9f;
                 currentSpriteIdle = circleSprite;
                 currentSpriteAttack = circleSprite;
                 break;
@@ -80,6 +83,7 @@ public class enemy : MonoBehaviour
     public void die()
     {
         alive = false;
+        player.gotXp(xp);
         player.currentFloor.enemyDied(game.enemyToSpawnName);
     }
 }
