@@ -78,13 +78,19 @@ public class saveLogic : MonoBehaviour
         string saveKeysString = "hpMax;" +
             "armor;" +
             "weapon;" +
-            "armor value;" +
-            "damage;";
+            "armorValue;" +
+            "damage;" + //5
+            "lvl;" +
+            "xp;" +
+            "skillPoints;";
         string saveValuesString = "10;" +
             "underwear;" +
             "fists;" +
             "0;" +
-            "1;";
+            "0;" + //5
+            "0;" +
+            "0;" +
+            "0;";
 
         saveKeys = saveKeysString.Split(";");
         defaultSaveValues = saveValuesString.Split(";");

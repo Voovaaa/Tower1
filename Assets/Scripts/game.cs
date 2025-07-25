@@ -15,6 +15,7 @@ public class game : MonoBehaviour
     public GameObject tileToSpawnOnFloor2;
 
     public GameObject ui;
+    public GameObject lvlupMenu;
 
     public static string enemyToSpawnName;
     public static floor floor2;
@@ -23,10 +24,11 @@ public class game : MonoBehaviour
     private loot lootuha;
     private void Awake()
     {
-        //PlayerPrefs.DeleteAll(); // testMode
+        PlayerPrefs.DeleteAll(); // testMode
 
         saveLogic.initializeAllLoot();
         player.initialize(transform.gameObject);
+        lvlUpButtons.Scripts = transform.gameObject;
 
         Dictionary<string, string> enemiesNamountFloor2 = new Dictionary<string, string>();
         enemiesNamountFloor2["wolf"] = "5";
@@ -37,12 +39,20 @@ public class game : MonoBehaviour
 
         player.currentFloorNumber = defaultFloorNumber;
         player.currentFloor = floor2; // change it later
+
+
     }
 
     private void Update() // убрать всё из апдейта нахуй, да хотя похуй лан
     {
         ui.transform.Find("armor text").GetComponent<TMP_Text>().text = $"{player.armor.name.FirstCharacterToUpper()}: {player.calculateArmorValue()} armor.";
         ui.transform.Find("weapon text").GetComponent<TMP_Text>().text = $"{player.weapon.name.FirstCharacterToUpper()}: {player.calculateDamageValue()} damage.";
+
+        lvlupMenu.transform.Find("current lvl text").GetComponent<TMP_Text>().text = $"lvl: {player.profileData["lvl"]}";
+        lvlupMenu.transform.Find("max hp").GetComponent<TMP_Text>().text = $"max hp: {player.profileData["hpMax"]}";
+        lvlupMenu.transform.Find("armor").GetComponent<TMP_Text>().text = $"base armor: {player.profileData["armorValue"]}";
+        lvlupMenu.transform.Find("damage").GetComponent<TMP_Text>().text = $"base damage: {player.profileData["damage"]}";
+        lvlupMenu.transform.Find("skillpoints").GetComponent<TMP_Text>().text = $"skillpoints: {player.profileData["skillPoints"]}";
     }
 
     public class floor
