@@ -82,7 +82,11 @@ public class saveLogic : MonoBehaviour
             "damage;" + //5
             "lvl;" +
             "xp;" +
-            "skillPoints;";
+            "skillPoints;" +
+            "foodLeft;" +
+            "villagersLeft;" + // 10
+            "timeLeft;" +
+            "foodCollected;";
         string saveValuesString = "10;" +
             "underwear;" +
             "fists;" +
@@ -90,6 +94,10 @@ public class saveLogic : MonoBehaviour
             "0;" + //5
             "0;" +
             "0;" +
+            "0;" +
+            "23;" +
+            "22;" + // 10
+            "15;" +
             "0;";
 
         saveKeys = saveKeysString.Split(";");

@@ -16,12 +16,12 @@ public class player : MonoBehaviour
     public static game.loot armor;
 
     
-    public static void initialize(GameObject scripts)
+    public static void initialize()
     {
-        Scripts = scripts;
+        Scripts = game.scripts;
         saveLogic.InitializeDefaultProfileSaveData();
         profileData = saveLogic.getProfileSaveData();
-        currentTile = scripts.GetComponent<game>().getTileToSpawn();
+        currentTile = Scripts.GetComponent<game>().getTileToSpawn();
         currentTile.GetComponent<tile>().setStatus("player");
 
         weapon = saveLogic.getLootInstance(profileData["weapon"]);
