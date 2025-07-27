@@ -57,10 +57,10 @@ public class battleLogic : MonoBehaviour
     {
         repeatAttackTime = 1f;
 
-        floor = scripts.GetComponent<game>().currentFloor;
+        
         enemyInstance = transform.Find("Enemy").gameObject;
         playerInstance = transform.Find("Player").gameObject;
-        floor.SetActive(false);
+        game.scripts.GetComponent<game>().floorsCanvas.SetActive(false);
         playerInstance.SetActive(true);
         enemyInstance.SetActive(true);
         //create enemy instance, take enemy name from floor save
@@ -73,7 +73,7 @@ public class battleLogic : MonoBehaviour
     public void endBattle()
     {
         CancelInvoke("attack");
-        floor.SetActive(true);
+        game.scripts.GetComponent<game>().floorsCanvas.SetActive(true);
         playerInstance.SetActive(false);
         enemyInstance.SetActive(false);
         scripts.GetComponent<game>().battleEnd();

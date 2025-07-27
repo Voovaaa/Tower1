@@ -48,7 +48,7 @@ public class floor1Logic : MonoBehaviour
     {
         game.scripts.GetComponent<game>().backgroundFloor.SetActive(true);
         game.scripts.GetComponent<game>().floorsUi.SetActive(true);
-        game.scripts.GetComponent<game>().currentFloor.SetActive(true);
+        game.scripts.GetComponent<game>().floorsCanvas.SetActive(true);
         gameObject.SetActive(false);
     }
 }

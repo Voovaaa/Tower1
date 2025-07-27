@@ -25,14 +25,14 @@ public class lvlUpButtons : MonoBehaviour
     }
     public void toLvlup()
     {
-        Scripts.GetComponent<game>().currentFloor.SetActive(false);
+        Scripts.GetComponent<game>().floorsCanvas.SetActive(false);
         Scripts.GetComponent<game>().floorsUi.SetActive(false);
         Scripts.GetComponent<game>().lvlupMenu.SetActive(true);
 
     }
     public void backToFloor()
     {
-        Scripts.GetComponent<game>().currentFloor.SetActive(true);
+        Scripts.GetComponent<game>().floorsCanvas.SetActive(true);
         Scripts.GetComponent<game>().floorsUi.SetActive(true);
         Scripts.GetComponent<game>().lvlupMenu.SetActive(false);
         

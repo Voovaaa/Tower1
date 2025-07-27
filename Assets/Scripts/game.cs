@@ -10,6 +10,7 @@ public class game : MonoBehaviour
     public GameObject backgroundFloor;
     public GameObject backgroundBattle;
 
+    public GameObject floorsCanvas;
     public GameObject floor1;
     public GameObject currentFloor;
     public GameObject battle;
@@ -28,7 +29,7 @@ public class game : MonoBehaviour
     private void Awake()
     {
         scripts = transform.gameObject;
-        PlayerPrefs.DeleteAll(); // testMode
+        //PlayerPrefs.DeleteAll(); // testMode
 
         saveLogic.initializeAllLoot();
         player.initialize();
@@ -39,14 +40,15 @@ public class game : MonoBehaviour
         enemiesNamountFloor2["wolf"] = "5";
         enemiesNamountFloor2["circle"] = "1";
         lootToDefaultSpawnFloor2 = saveLogic.floorNloot[2];
-        floor2 = new floor(2, tileToSpawnOnFloor2, 92 - 1, lootToDefaultSpawnFloor2, enemiesNamountFloor2);
+        int defaultAvailableFoodOnFloor2 = 30;
+        floor2 = new floor(2, tileToSpawnOnFloor2, 92 - 1, lootToDefaultSpawnFloor2, enemiesNamountFloor2, defaultAvailableFoodOnFloor2);
 
 
         player.currentFloorNumber = defaultFloorNumber;
         player.currentFloor = floor2; // change it later
 
 
-        player.setProfileValue("foodCollected", "1");
+        //player.setProfileValue("foodCollected", "1");
 
 
     }
@@ -55,6 +57,7 @@ public class game : MonoBehaviour
     {
         floorsUi.transform.Find("armor text").GetComponent<TMP_Text>().text = $"{player.armor.name.FirstCharacterToUpper()}: {player.calculateArmorValue()} armor.";
         floorsUi.transform.Find("weapon text").GetComponent<TMP_Text>().text = $"{player.weapon.name.FirstCharacterToUpper()}: {player.calculateDamageValue()} damage.";
+        floorsUi.transform.Find("food collected").GetComponent<TMP_Text>().text = $"food collected: {player.profileData["foodCollected"]}";
 
         lvlupMenu.transform.Find("current lvl text").GetComponent<TMP_Text>().text = $"lvl: {player.profileData["lvl"]}";
         lvlupMenu.transform.Find("max hp").GetComponent<TMP_Text>().text = $"max hp: {player.profileData["hpMax"]}";
@@ -64,6 +67,7 @@ public class game : MonoBehaviour
 
 
         floor1Logic.timeAmount -= Time.deltaTime;
+        player.setProfileValue("timeLeft", floor1Logic.timeAmount.ToString());
         if (floor1Logic.timeAmount < 0 )
         {
             feedVillagers();
@@ -79,8 +83,9 @@ public class game : MonoBehaviour
         public int unknownTilesAmount;
         public List<loot> availableLoot; // all loot not from enemies, from unknown tiles
         public Dictionary<string, string> enemiesNamounts;
+        public int availableFood;
 
-        public floor(int floorNumber, GameObject tileToSpawn, int unknownTilesAmount, List<loot> availableLoot, Dictionary<string, string> enemiesNamounts) // floor number and default floor data
+        public floor(int floorNumber, GameObject tileToSpawn, int unknownTilesAmount, List<loot> availableLoot, Dictionary<string, string> enemiesNamounts, int availableFood) // floor number and default floor data
         {
             this.floorNumber = floorNumber;
             this.unknownTilesAmount = unknownTilesAmount;
@@ -89,7 +94,9 @@ public class game : MonoBehaviour
             {
                 enemiesAmount = int.Parse(saveLogic.getFloorSaveValue(floorNumber, "enemiesAmount"));
 
-                unknownTilesAmount = int.Parse(saveLogic.getFloorSaveValue(floorNumber, "unknownTilesAmount"));
+                this.unknownTilesAmount = int.Parse(saveLogic.getFloorSaveValue(floorNumber, "unknownTilesAmount"));
+
+                this.availableFood = int.Parse(saveLogic.getFloorSaveValue(floorNumber, "availableFood"));
 
                 foreach (loot lootInstance in availableLoot)
                 {
@@ -129,6 +136,9 @@ public class game : MonoBehaviour
 
                 this.unknownTilesAmount = unknownTilesAmount;
                 saveLogic.setFloorSaveValue(floorNumber, "unknownTilesAmount", unknownTilesAmount.ToString());
+
+                this.availableFood = availableFood;
+                saveLogic.setFloorSaveValue(floorNumber, "availableFood", availableFood.ToString());
             }
             tileToSpawnOn = tileToSpawn;
         }

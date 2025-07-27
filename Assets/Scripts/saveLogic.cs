@@ -97,8 +97,8 @@ public class saveLogic : MonoBehaviour
             "0;" +
             "23;" +
             "22;" + // 10
-            "15;" +
-            "0;";
+            "60;" +
+            "1;";
 
         saveKeys = saveKeysString.Split(";");
         defaultSaveValues = saveValuesString.Split(";");
