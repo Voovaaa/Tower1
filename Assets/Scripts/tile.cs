@@ -7,7 +7,7 @@ public class tile : MonoBehaviour
     public string status; // unknown, wasHere, player
     public string currentMarkImageName;
     public float chanceToLoot = 0.1f;
-
+    public float chanceToFood = 0.2f;
     private void Start()
     {
         scripts = GameObject.Find("Scripts");
@@ -59,6 +59,7 @@ public class tile : MonoBehaviour
         Vector2 clickedTilePosition = transform.position;
         Vector2 playerTilePosition = player.currentTile.transform.position;
         float tilesDistance = Vector2.Distance(clickedTilePosition, playerTilePosition);
+        int foodFound = 0;
         if (tilesDistance > 1.1f)
         {
             return;
@@ -67,17 +68,28 @@ public class tile : MonoBehaviour
         if (enemiesAmount == player.currentFloor.unknownTilesAmount)
         {
             battleStart();
+            foodFound += 1;
         }
         else if (enemiesAmount != 0 && Random.value >= 0.8f)
         {
             battleStart();
+            foodFound += 1;
         }
         player.currentFloor.decrementUnknownTiles();
+
+        if (isGetFood())
+        {
+            foodFound += 1;
+        }
+        getFood(foodFound);
+
 
         if (isGetLoot())
         {
             player.foundLoot(getRandomLoot());
         }
+
+        
 
         player.moveToTile(transform.gameObject);
     }
@@ -87,6 +99,30 @@ public class tile : MonoBehaviour
     }
     public void playerTileButton()
     {
+    }
+
+    public bool isGetFood()
+    {
+        if (player.currentFloor.unknownTilesAmount <= player.currentFloor.availableFood)
+        {
+            return true;
+        }
+        if (Random.value <= chanceToFood)
+        {
+            return true;
+        }
+        return false;
+    }
+    public void getFood(int foodAmount)
+    {
+        if (foodAmount == 0) { return; }
+        if (foodAmount > player.currentFloor.availableFood)
+        {
+            foodAmount = player.currentFloor.availableFood;
+        }
+        player.currentFloor.availableFood -= foodAmount;
+        player.setProfileValue("foodCollected", (int.Parse(player.profileData["foodCollected"]) + foodAmount).ToString());
+        saveLogic.setFloorSaveValue(player.currentFloorNumber, $"availableFood", player.currentFloor.availableFood.ToString());
     }
 
     public bool isGetLoot()
