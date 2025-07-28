@@ -8,15 +8,33 @@ public class tile : MonoBehaviour
     public string currentMarkImageName;
     public float chanceToLoot = 0.1f;
     public float chanceToFood = 0.2f;
+    public int tileNumber;
     private void Start()
     {
         scripts = GameObject.Find("Scripts");
-        setStatus(status);
+        //setStatus(status, -1);
     }
 
-    public void setStatus(string newStatus)
+
+    public string getStatus(int floorNumber, int tileNumb = -1)
+    {
+        if (tileNumb == -1) { tileNumb = tileNumber; }
+        if (saveLogic.getFloorSaveValue(floorNumber, $"tile {tileNumb}") == "")
+        {
+            setStatus("unknown", floorNumber, tileNumb);
+        }
+        else
+        {
+            setStatus(saveLogic.getFloorSaveValue(floorNumber, $"tile {tileNumb}"), floorNumber, tileNumb);
+        }
+        return saveLogic.getFloorSaveValue(floorNumber, $"tile {tileNumb}");
+    }
+    public void setStatus(string newStatus, int floorNumber, int tileNumber)
     {
         status = newStatus;
+        this.tileNumber = tileNumber;
+        saveLogic.setFloorSaveValue(floorNumber, $"tile {tileNumber}", status);
+        Debug.Log($"{tileNumber}, {floorNumber}, {status}");
         setMark();
     }
     public void setMark() //questionMark, Xmark, playerMark наху€ этот метод
@@ -89,7 +107,7 @@ public class tile : MonoBehaviour
             player.foundLoot(getRandomLoot());
         }
 
-        
+
 
         player.moveToTile(transform.gameObject);
     }
@@ -137,7 +155,7 @@ public class tile : MonoBehaviour
         {
             return true;
         }
-        if (Random.value <= chanceToLoot) 
+        if (Random.value <= chanceToLoot)
         {
             return true;
         }
@@ -196,7 +214,7 @@ public class tile : MonoBehaviour
         {
             if (kvp.Value == "0")
             {
-                i -= 1;
+                continue;
             }
             if (i == randomNumber)
             {

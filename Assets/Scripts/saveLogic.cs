@@ -164,6 +164,12 @@ public class saveLogic : MonoBehaviour
         game.loot tShirt = new game.loot("tshirt and shorts", 0, 1);
         addLootToData(2, tShirt);
 
+        floorNloot[3] = new List<game.loot>();
+        game.loot butcherKnife = new game.loot("butcher knife", 3, 0);
+        addLootToData(3, butcherKnife);
+        game.loot firefightersUniform = new game.loot("firefighter's uniform", 0, 3);
+        addLootToData(3, firefightersUniform);
+
         static void addLootToData(int floorNumber, game.loot loot)
         {
             allLoot.Add(loot);
@@ -173,7 +179,7 @@ public class saveLogic : MonoBehaviour
     }
 
 
-
+    
 
 
     

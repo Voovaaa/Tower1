@@ -11,20 +11,29 @@ public class game : MonoBehaviour
     public GameObject backgroundBattle;
 
     public GameObject floorsCanvas;
-    public GameObject floor1;
+    public GameObject floor1GM;
     public GameObject currentFloor;
     public GameObject battle;
 
     public int defaultFloorNumber;
     public GameObject tileToSpawnOnFloor2;
+    public GameObject tileToSpawnOnFloor3;
 
     public GameObject floorsUi;
     public GameObject lvlupMenu;
 
+    public GameObject floor2GM;
+    public GameObject floor3GM;
+
     public static string enemyToSpawnName;
+
     public static floor floor2;
+    public static floor floor3;
 
     private List<loot> lootToDefaultSpawnFloor2;
+    private Dictionary<string, string> enemiesNamountFloor2;
+    private List<loot> lootToDefaultSpawnFloor3;
+    private Dictionary<string, string> enemiesNamountFloor3;
     private loot lootuha;
     private void Awake()
     {
@@ -32,16 +41,28 @@ public class game : MonoBehaviour
         //PlayerPrefs.DeleteAll(); // testMode
 
         saveLogic.initializeAllLoot();
-        player.initialize();
-        lvlUpButtons.Scripts = transform.gameObject;
-        floor1.GetComponent<floor1Logic>().initialize();
 
-        Dictionary<string, string> enemiesNamountFloor2 = new Dictionary<string, string>();
-        enemiesNamountFloor2["wolf"] = "5";
+        enemiesNamountFloor2 = new Dictionary<string, string>();
+        enemiesNamountFloor2["unarmedGoblin"] = "5";
         enemiesNamountFloor2["circle"] = "1";
         lootToDefaultSpawnFloor2 = saveLogic.floorNloot[2];
         int defaultAvailableFoodOnFloor2 = 30;
         floor2 = new floor(2, tileToSpawnOnFloor2, 92 - 1, lootToDefaultSpawnFloor2, enemiesNamountFloor2, defaultAvailableFoodOnFloor2);
+        initializeTiles(floor2GM, 2);
+
+        enemiesNamountFloor3 = new Dictionary<string, string>();
+        enemiesNamountFloor3["wolf"] = "4";
+        enemiesNamountFloor3["circle"] = "1";
+        lootToDefaultSpawnFloor3 = saveLogic.floorNloot[3];
+        int defaultAvailableFoodOnFloor3 = 20;
+        floor3 = new floor(3, tileToSpawnOnFloor3, 68, lootToDefaultSpawnFloor3, enemiesNamountFloor3, defaultAvailableFoodOnFloor3);
+        initializeTiles(floor3GM, 3);
+
+
+
+        player.initialize();
+        lvlUpButtons.Scripts = transform.gameObject;
+        floor1GM.GetComponent<floor1Logic>().initialize();
 
 
         player.currentFloorNumber = defaultFloorNumber;
@@ -172,6 +193,19 @@ public class game : MonoBehaviour
         }
     }
 
+    public void initializeTiles(GameObject floorInstance, int floorNumb)
+    {
+        int i = 0;
+        foreach (tile tileInstance in floorInstance.transform.Find("Grid").gameObject.GetComponentsInChildren<tile>())
+        {
+            if (tileInstance.getStatus(floorNumb, i) == "player")
+            {
+                tileInstance.setStatus("unknown", floorNumb, i);
+            }
+            i++;
+        }
+    }
+
     public class loot
     {
         public string name;
@@ -233,7 +267,7 @@ public class game : MonoBehaviour
 
         if (floor1Logic.villagersAmount <= 0)
         {
-            floor1.transform.Find("npcs").gameObject.SetActive(false);
+            floor1GM.transform.Find("npcs").gameObject.SetActive(false);
         }
     }    
 
@@ -243,6 +277,8 @@ public class game : MonoBehaviour
         {
             case 2:
                 return tileToSpawnOnFloor2;
+            case 3:
+                return tileToSpawnOnFloor3;
             default:
                 return tileToSpawnOnFloor2;
         }

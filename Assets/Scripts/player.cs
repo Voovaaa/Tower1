@@ -22,7 +22,7 @@ public class player : MonoBehaviour
         saveLogic.InitializeDefaultProfileSaveData();
         profileData = saveLogic.getProfileSaveData();
         currentTile = Scripts.GetComponent<game>().getTileToSpawn();
-        currentTile.GetComponent<tile>().setStatus("player");
+        moveToTile(currentTile);
 
         weapon = saveLogic.getLootInstance(profileData["weapon"]);
         armor = saveLogic.getLootInstance(profileData["armor"]);
@@ -39,7 +39,7 @@ public class player : MonoBehaviour
 
     public static void foundLoot(game.loot loot)
     {
-        Scripts.GetComponent<game>().notify($"you found {loot.name}");
+        Scripts.GetComponent<game>().notify($"you've found {loot.name}");
         if (loot.damageValue > weapon.damageValue)
         {
             weapon = loot;
@@ -84,9 +84,11 @@ public class player : MonoBehaviour
 
     public static void moveToTile(GameObject newTile)
     {
-        currentTile.GetComponent<tile>().setStatus("wasHere");
+        tile tile = currentTile.GetComponent<tile>();
+        tile.setStatus("wasHere", currentFloorNumber, tile.tileNumber);
         currentTile = newTile;
-        currentTile.GetComponent<tile>().setStatus("player");
+        tile newtile = currentTile.GetComponent<tile>();
+        newtile.setStatus("player", currentFloorNumber, newtile.tileNumber);
     }
 
 

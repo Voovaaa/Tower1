@@ -9,6 +9,8 @@ public class enemy : MonoBehaviour
     public Sprite wolfSpriteIdle;
     public Sprite wolfSpriteAttack;
     public Sprite circleSprite;
+    public Sprite goblinSpriteIdle;
+    public Sprite goblinSpriteAttack;
 
     public bool alive;
     public Sprite currentSpriteIdle;
@@ -21,8 +23,6 @@ public class enemy : MonoBehaviour
     private int armor;
     private float damage;
     private float xp;
-    private string enemySpriteIdleName;
-    private string enemySpriteAttackName;
 
     public void startBattle()
     {
@@ -37,10 +37,10 @@ public class enemy : MonoBehaviour
         switch (game.enemyToSpawnName)
         {
             case "wolf":
-                hpMax = 4;
+                hpMax = 8;
                 armor = 0;
-                damage = 2;
-                xp = 0.3f;
+                damage = 4;
+                xp = 0.4f;
                 currentSpriteIdle = wolfSpriteIdle;
                 currentSpriteAttack = wolfSpriteAttack;
                 break;
@@ -51,6 +51,14 @@ public class enemy : MonoBehaviour
                 xp = 0.9f;
                 currentSpriteIdle = circleSprite;
                 currentSpriteAttack = circleSprite;
+                break;
+            case "unarmedGoblin":
+                hpMax = 4;
+                armor = 0;
+                damage = 2;
+                xp = 0.3f;
+                currentSpriteIdle = goblinSpriteIdle;
+                currentSpriteAttack = goblinSpriteAttack;
                 break;
             default:
                 break;
