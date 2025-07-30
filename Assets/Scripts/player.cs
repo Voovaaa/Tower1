@@ -6,14 +6,14 @@ public class player : MonoBehaviour
     public static GameObject currentTile;
 
     public static int currentFloorNumber;
-    public static game.floor currentFloor;
+    public static floor currentFloor;
 
     public static Dictionary<string, string> profileData;
 
     public static GameObject Scripts;
 
-    public static game.loot weapon;
-    public static game.loot armor;
+    public static loot weapon;
+    public static loot armor;
 
     
     public static void initialize()
@@ -21,8 +21,8 @@ public class player : MonoBehaviour
         Scripts = game.scripts;
         saveLogic.InitializeDefaultProfileSaveData();
         profileData = saveLogic.getProfileSaveData();
-        currentTile = Scripts.GetComponent<game>().getTileToSpawn();
-        currentTile.GetComponent<tile>().setStatus("player");
+        currentTile = Scripts.GetComponent<game>().getTileToSpawn(2); // MUST BE LOADED FROM SAVE
+        moveToTile(currentTile);
 
         weapon = saveLogic.getLootInstance(profileData["weapon"]);
         armor = saveLogic.getLootInstance(profileData["armor"]);
@@ -37,9 +37,9 @@ public class player : MonoBehaviour
         return armor.armorValue + int.Parse(profileData["armorValue"]);
     }
 
-    public static void foundLoot(game.loot loot)
+    public static void foundLoot(loot loot)
     {
-        Scripts.GetComponent<game>().notify($"you found {loot.name}");
+        Scripts.GetComponent<game>().notify($"you've found {loot.name}");
         if (loot.damageValue > weapon.damageValue)
         {
             weapon = loot;
@@ -84,9 +84,14 @@ public class player : MonoBehaviour
 
     public static void moveToTile(GameObject newTile)
     {
-        currentTile.GetComponent<tile>().setStatus("wasHere");
-        currentTile = newTile;
-        currentTile.GetComponent<tile>().setStatus("player");
+        tile current_tile = currentTile.GetComponent<tile>();
+        tile new_tile = newTile.GetComponent<tile>();
+        if (new_tile.status != "ladder")
+        {
+            current_tile.setStatus("wasHere", currentFloorNumber, current_tile.tileNumber);
+            currentTile = newTile;
+            new_tile.setStatus("player", currentFloorNumber, new_tile.tileNumber);
+        }
     }
 
 

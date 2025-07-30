@@ -1,39 +1,44 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class tile : MonoBehaviour
 {
     public GameObject scripts;
-    public string status; // unknown, wasHere, player
+    public string status; // unknown, wasHere, player, ladder
     public string currentMarkImageName;
     public float chanceToLoot = 0.1f;
     public float chanceToFood = 0.2f;
+    public float chanceToEnemy = 0.2f;
+    public float chanceToLadder = 0.05f;
+    public int tileNumber;
     private void Start()
     {
         scripts = GameObject.Find("Scripts");
-        setStatus(status);
+        //setStatus(status, -1);
     }
 
-    public void setStatus(string newStatus)
+
+    public string getStatus(int floorNumber, int tileNumb = -1)
+    {
+        if (tileNumb == -1) { tileNumb = tileNumber; }
+        if (saveLogic.getFloorSaveValue(floorNumber, $"tile {tileNumb}") == "")
+        {
+            setStatus("unknown", floorNumber, tileNumb);
+        }
+        else
+        {
+            //setStatus(saveLogic.getFloorSaveValue(floorNumber, $"tile {tileNumb}"), floorNumber, tileNumb);
+        }
+        return saveLogic.getFloorSaveValue(floorNumber, $"tile {tileNumb}");
+    }
+    public void setStatus(string newStatus, int floorNumber, int tileNumber)
     {
         status = newStatus;
+        this.tileNumber = tileNumber;
+        saveLogic.setFloorSaveValue(floorNumber, $"tile {tileNumber}", status);
         setMark();
-    }
-    public void setMark() //questionMark, Xmark, playerMark нахуя этот метод
-    {
-        setMarkImage();
-        //switch (status)
-        //{
-        //    case "unknown":
-        //        setMarkImage();
-        //        break;
-        //    case "wasHere":
-        //        setMarkImage();
-        //        break;
-        //    case "player":
-        //        setMarkImage();
-        //        break;
-        //}
+        transform.gameObject.SetActive(true); // я хуйзнает, почему, но сетстатус деактивирует тайл
     }
 
     public void doTileMethod() // onclick 
@@ -49,6 +54,9 @@ public class tile : MonoBehaviour
             case "player":
                 playerTileButton();
                 break;
+            case "ladder":
+                ladderTileButton();
+                break;
             default:
                 unknownTileButton();
                 break;
@@ -60,22 +68,23 @@ public class tile : MonoBehaviour
         Vector2 playerTilePosition = player.currentTile.transform.position;
         float tilesDistance = Vector2.Distance(clickedTilePosition, playerTilePosition);
         int foodFound = 0;
+
         if (tilesDistance > 1.1f)
         {
             return;
         }
+
         int enemiesAmount = int.Parse(saveLogic.getFloorSaveValue(player.currentFloorNumber, "enemiesAmount"));
         if (enemiesAmount == player.currentFloor.unknownTilesAmount)
         {
             battleStart();
             foodFound += 1;
         }
-        else if (enemiesAmount != 0 && Random.value >= 0.8f)
+        else if (enemiesAmount != 0 && Random.value <= chanceToEnemy)
         {
             battleStart();
-            foodFound += 1;
         }
-        player.currentFloor.decrementUnknownTiles();
+        
 
         if (isGetFood())
         {
@@ -89,8 +98,14 @@ public class tile : MonoBehaviour
             player.foundLoot(getRandomLoot());
         }
 
-        
+        if (isLadder())
+        {
+            scripts.GetComponent<game>().notify("you've found way up");
+            ladderTileButton();
+            setStatus("ladder", player.currentFloorNumber, tileNumber);
+        }
 
+        player.currentFloor.decrementUnknownTiles();
         player.moveToTile(transform.gameObject);
     }
     public void wasHereTileButton()
@@ -100,9 +115,18 @@ public class tile : MonoBehaviour
     public void playerTileButton()
     {
     }
+    public void ladderTileButton()
+    {
+        scripts.GetComponent<game>().getFloorByNumber(player.currentFloorNumber + 1).wasHere = true;
+        saveLogic.setFloorSaveValue(player.currentFloorNumber + 1, "wasHere", "true");
+        player.currentFloor.ladderFound = true;
+        saveLogic.setFloorSaveValue(player.currentFloorNumber, "ladderFound", "true");
+    }
 
     public bool isGetFood()
     {
+        if (player.currentFloor.availableFood <= 0)
+        {  return false; }
         if (player.currentFloor.unknownTilesAmount <= player.currentFloor.availableFood)
         {
             return true;
@@ -127,7 +151,7 @@ public class tile : MonoBehaviour
 
     public bool isGetLoot()
     {
-        List<game.loot> availableLoot = player.currentFloor.availableLoot;
+        List<loot> availableLoot = player.currentFloor.availableLoot;
         int unknownTilesAmount = player.currentFloor.unknownTilesAmount;
         if (availableLoot.Count <= 0)
         {
@@ -137,15 +161,15 @@ public class tile : MonoBehaviour
         {
             return true;
         }
-        if (Random.value <= chanceToLoot) 
+        if (Random.value <= chanceToLoot)
         {
             return true;
         }
         return false;
     }
-    public game.loot getRandomLoot()
+    public loot getRandomLoot()
     {
-        game.loot lootToReturn = player.currentFloor.availableLoot[Random.Range(0, player.currentFloor.availableLoot.Count)];
+        loot lootToReturn = player.currentFloor.availableLoot[Random.Range(0, player.currentFloor.availableLoot.Count)];
         return lootToReturn;
     }
 
@@ -157,31 +181,35 @@ public class tile : MonoBehaviour
         Debug.Log("Butle");
     }
 
-
-    public void setMarkImage()
+    public bool isLadder()
     {
-        GameObject markImage;
+        if (player.currentFloor.ladderFound == true) { return false; }
+        if (player.currentFloor.unknownTilesAmount == 1 || Random.value <= chanceToLadder) { return true; }
+        return false;
+    }
+
+    public void setMark()
+    {
         if (currentMarkImageName != null) { transform.Find(currentMarkImageName).gameObject.SetActive(false); }
         switch (status)
         {
             case "unknown":
                 currentMarkImageName = "question mark";
-                markImage = transform.Find("question mark").gameObject;
                 break;
             case "wasHere":
                 currentMarkImageName = "X mark";
-                markImage = transform.Find("X mark").gameObject;
                 break;
             case "player":
                 currentMarkImageName = "player mark";
-                markImage = transform.Find("player mark").gameObject;
+                break;
+            case "ladder":
+                currentMarkImageName = "ladder mark";
                 break;
             default:
                 currentMarkImageName = "question mark";
-                markImage = transform.Find("question mark").gameObject;
                 break;
         }
-        markImage.SetActive(true);
+        transform.Find(currentMarkImageName).gameObject.SetActive(true);
     }
 
     public static string getRandomEnemyNameToSpawn(Dictionary<string, string> dict)
@@ -196,7 +224,7 @@ public class tile : MonoBehaviour
         {
             if (kvp.Value == "0")
             {
-                i -= 1;
+                continue;
             }
             if (i == randomNumber)
             {
@@ -207,5 +235,23 @@ public class tile : MonoBehaviour
             i++;
         }
         return keyName;
+    }
+
+    public static void initializeTiles(GameObject floorInstance, int floorNumb)
+    {
+        int i = 0;
+        List<tile> tiles = floorInstance.gameObject.GetComponentsInChildren<tile>().ToList();
+        foreach (tile tileInstance in tiles)
+        {
+            tileInstance.setStatus(tileInstance.getStatus(floorNumb, i), floorNumb, i);
+            if (tileInstance.getStatus(floorNumb, i) == "player")
+            {
+                tileInstance.setStatus("wasHere", floorNumb, i);
+            }
+            i++;
+        }
+
+        tile tileToSpawn = GameObject.Find("Scripts").GetComponent<game>().getTileToSpawn(floorNumb).GetComponent<tile>();
+        tileToSpawn.setStatus("player", floorNumb, tileToSpawn.tileNumber); 
     }
 }

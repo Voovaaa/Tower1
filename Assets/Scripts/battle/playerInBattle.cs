@@ -13,6 +13,8 @@ public class playerInBattle : MonoBehaviour
     public bool alive;
     public TMP_Text hpText;
 
+    public static bool wonLastBattle;
+
     public void startBattle()
     {
         hpMax = float.Parse(player.getProfileValue("hpMax"));
@@ -46,6 +48,7 @@ public class playerInBattle : MonoBehaviour
     public void die()
     {
         alive = false;
+        wonLastBattle = false;
     }
     public void gotXp(float xpGot)
     {
