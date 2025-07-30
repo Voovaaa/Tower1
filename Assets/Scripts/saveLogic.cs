@@ -14,9 +14,9 @@ public class saveLogic : MonoBehaviour
 
     public static Dictionary<string, string> currentProfileSaveData;
 
-    public static List<game.loot> allLoot;
-    public static Dictionary<int, List<game.loot>> floorNloot;
-    public static Dictionary<string, game.loot> nameNloot;
+    public static List<loot> allLoot;
+    public static Dictionary<int, List<loot>> floorNloot;
+    public static Dictionary<string, loot> nameNloot;
 
     public static void setSettingsSave(bool isFullscreen, float volume, int resolutionOption)
     {
@@ -133,7 +133,7 @@ public class saveLogic : MonoBehaviour
 
 
 
-    public static game.loot getLootInstance(string name)
+    public static loot getLootInstance(string name)
     {
         return nameNloot[name];
     }
@@ -147,30 +147,30 @@ public class saveLogic : MonoBehaviour
     }
     public static void initializeAllLoot()
     {
-        allLoot = new List<game.loot>();
-        floorNloot = new Dictionary<int, List<game.loot>>();
-        nameNloot = new Dictionary<string, game.loot>();
+        allLoot = new List<loot>();
+        floorNloot = new Dictionary<int, List<loot>>();
+        nameNloot = new Dictionary<string, loot>();
 
-        game.loot fists = new game.loot("fists", 1, 0);
-        game.loot underwear = new game.loot("underwear", 0, 0);
+        loot fists = new loot("fists", 1, 0);
+        loot underwear = new loot("underwear", 0, 0);
         allLoot.Add(fists);
         allLoot.Add(underwear);
         nameNloot["fists"] = fists;
         nameNloot["underwear"] = underwear;
 
-        floorNloot[2] = new List<game.loot>();
-        game.loot woodenClub = new game.loot("wooden club", 2, 0);
+        floorNloot[2] = new List<loot>();
+        loot woodenClub = new loot("wooden club", 2, 0);
         addLootToData(2, woodenClub);
-        game.loot tShirt = new game.loot("tshirt and shorts", 0, 1);
+        loot tShirt = new loot("tshirt and shorts", 0, 1);
         addLootToData(2, tShirt);
 
-        floorNloot[3] = new List<game.loot>();
-        game.loot butcherKnife = new game.loot("butcher knife", 3, 0);
+        floorNloot[3] = new List<loot>();
+        loot butcherKnife = new loot("butcher knife", 3, 0);
         addLootToData(3, butcherKnife);
-        game.loot firefightersUniform = new game.loot("firefighter's uniform", 0, 3);
+        loot firefightersUniform = new loot("firefighter's uniform", 0, 3);
         addLootToData(3, firefightersUniform);
 
-        static void addLootToData(int floorNumber, game.loot loot)
+        static void addLootToData(int floorNumber, loot loot)
         {
             allLoot.Add(loot);
             floorNloot[floorNumber].Add(loot);

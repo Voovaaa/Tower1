@@ -93,5 +93,6 @@ public class enemy : MonoBehaviour
         alive = false;
         player.gotXp(xp);
         player.currentFloor.enemyDied(game.enemyToSpawnName);
+        playerInBattle.wonLastBattle = true;
     }
 }

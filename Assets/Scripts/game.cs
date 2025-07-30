@@ -3,7 +3,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class game : MonoBehaviour
+public partial class game : MonoBehaviour
 {
     public static GameObject scripts;
 
@@ -35,10 +35,12 @@ public class game : MonoBehaviour
     private List<loot> lootToDefaultSpawnFloor3;
     private Dictionary<string, string> enemiesNamountFloor3;
     private loot lootuha;
+
+    public GameObject TIIILE;
     private void Awake()
     {
         scripts = transform.gameObject;
-        //PlayerPrefs.DeleteAll(); // testMode
+        PlayerPrefs.DeleteAll(); // testMode
 
         saveLogic.initializeAllLoot();
 
@@ -48,7 +50,9 @@ public class game : MonoBehaviour
         lootToDefaultSpawnFloor2 = saveLogic.floorNloot[2];
         int defaultAvailableFoodOnFloor2 = 30;
         floor2 = new floor(2, tileToSpawnOnFloor2, 92 - 1, lootToDefaultSpawnFloor2, enemiesNamountFloor2, defaultAvailableFoodOnFloor2);
-        initializeTiles(floor2GM, 2);
+        tile.initializeTiles(floor2GM, 2);
+        floor2.wasHere = true;
+        saveLogic.setFloorSaveValue(2, "wasHere", "true");
 
         enemiesNamountFloor3 = new Dictionary<string, string>();
         enemiesNamountFloor3["wolf"] = "4";
@@ -56,7 +60,7 @@ public class game : MonoBehaviour
         lootToDefaultSpawnFloor3 = saveLogic.floorNloot[3];
         int defaultAvailableFoodOnFloor3 = 20;
         floor3 = new floor(3, tileToSpawnOnFloor3, 68, lootToDefaultSpawnFloor3, enemiesNamountFloor3, defaultAvailableFoodOnFloor3);
-        initializeTiles(floor3GM, 3);
+        tile.initializeTiles(floor3GM, 3);
 
 
 
@@ -69,9 +73,7 @@ public class game : MonoBehaviour
         player.currentFloor = floor2; // change it later
 
 
-        //player.setProfileValue("foodCollected", "1");
-
-
+        changeFloorButtons.menu = floorsUi.transform.Find("change floor menu").gameObject;
     }
 
     private void Update() // убрать всё из апдейта нахуй, да хотя похуй лан
@@ -89,135 +91,12 @@ public class game : MonoBehaviour
 
         floor1Logic.timeAmount -= Time.deltaTime;
         player.setProfileValue("timeLeft", floor1Logic.timeAmount.ToString());
-        if (floor1Logic.timeAmount < 0 )
+        if (floor1Logic.timeAmount < 0)
         {
             feedVillagers();
         }
-    }
 
-    public class floor
-    {
-        public GameObject tileToSpawnOn;
-        public int floorNumber;
-        public int enemiesAmount;
-        public bool wasHere;
-        public int unknownTilesAmount;
-        public List<loot> availableLoot; // all loot not from enemies, from unknown tiles
-        public Dictionary<string, string> enemiesNamounts;
-        public int availableFood;
-
-        public floor(int floorNumber, GameObject tileToSpawn, int unknownTilesAmount, List<loot> availableLoot, Dictionary<string, string> enemiesNamounts, int availableFood) // floor number and default floor data
-        {
-            this.floorNumber = floorNumber;
-            this.unknownTilesAmount = unknownTilesAmount;
-            string wasHereString = saveLogic.getFloorSaveValue(floorNumber, "wasHere");
-            if (wasHereString != "" && bool.Parse(wasHereString)) //load floor save
-            {
-                enemiesAmount = int.Parse(saveLogic.getFloorSaveValue(floorNumber, "enemiesAmount"));
-
-                this.unknownTilesAmount = int.Parse(saveLogic.getFloorSaveValue(floorNumber, "unknownTilesAmount"));
-
-                this.availableFood = int.Parse(saveLogic.getFloorSaveValue(floorNumber, "availableFood"));
-
-                foreach (loot lootInstance in availableLoot)
-                {
-                    if (saveLogic.getFloorSaveValue(floorNumber, $"loot {lootInstance.name}") == "true")
-                    {
-                        this.availableLoot.Add(lootInstance);
-                    }
-                }
-
-                foreach (KeyValuePair<string, string> kvp in enemiesNamounts)
-                {
-                    if (int.Parse(saveLogic.getFloorSaveValue(floorNumber, $"enemy {kvp.Key}")) > 0)
-                    {
-                        this.enemiesNamounts[kvp.Key] = saveLogic.getFloorSaveValue(floorNumber, $"enemy {kvp.Key}");
-                    }
-                }
-            }
-            else //load default data if wasnt on floor
-            {
-                wasHere = false;
-                saveLogic.setFloorSaveValue(floorNumber, "wasHere", wasHere.ToString());
-
-                this.enemiesNamounts = enemiesNamounts;
-                foreach (KeyValuePair<string, string> kvp in enemiesNamounts)
-                {
-                    saveLogic.setFloorSaveValue(floorNumber, $"enemy {kvp.Key}", kvp.Value);
-                }
-
-                enemiesAmount = calculateEnemiesAmount();
-                saveLogic.setFloorSaveValue(floorNumber, "enemiesAmount", enemiesAmount.ToString());
-
-                this.availableLoot = availableLoot;
-                foreach (loot lootInstance in availableLoot)
-                {
-                    saveLogic.setFloorSaveValue(floorNumber, $"loot {lootInstance.name}", "true");
-                }
-
-                this.unknownTilesAmount = unknownTilesAmount;
-                saveLogic.setFloorSaveValue(floorNumber, "unknownTilesAmount", unknownTilesAmount.ToString());
-
-                this.availableFood = availableFood;
-                saveLogic.setFloorSaveValue(floorNumber, "availableFood", availableFood.ToString());
-            }
-            tileToSpawnOn = tileToSpawn;
-        }
-        public void decrementUnknownTiles()
-        {
-            unknownTilesAmount -= 1;
-            saveLogic.setFloorSaveValue(floorNumber, "unknownTilesAmount", unknownTilesAmount.ToString());
-        }
-        public void enemyDied(string enemyName)
-        {
-            enemiesNamounts[enemyName] = (int.Parse(enemiesNamounts[enemyName]) - 1).ToString();
-            saveLogic.setFloorSaveValue(floorNumber, $"enemy {enemyName}", enemiesNamounts[enemyName]);
-            enemiesAmount -= 1;
-            saveLogic.setFloorSaveValue(floorNumber, "enemiesAmount", enemiesAmount.ToString());
-        }
-        public void lootTaken(loot lootInstance)
-        {
-            availableLoot.Remove(lootInstance);
-            saveLogic.setFloorSaveValue(floorNumber, $"loot {lootInstance.name}", "false");
-        }
-
-
-        public int calculateEnemiesAmount()
-        {
-            int amount = 0;
-            foreach (KeyValuePair<string, string> enemyNamount in enemiesNamounts)
-            {
-                amount += int.Parse(enemyNamount.Value);
-            }
-            return amount;
-        }
-    }
-
-    public void initializeTiles(GameObject floorInstance, int floorNumb)
-    {
-        int i = 0;
-        foreach (tile tileInstance in floorInstance.transform.Find("Grid").gameObject.GetComponentsInChildren<tile>())
-        {
-            if (tileInstance.getStatus(floorNumb, i) == "player")
-            {
-                tileInstance.setStatus("unknown", floorNumb, i);
-            }
-            i++;
-        }
-    }
-
-    public class loot
-    {
-        public string name;
-        public int damageValue;
-        public int armorValue;
-
-        public loot(string Name, int DamageValue = 0, int ArmorValue = 0)
-        {
-            name = Name;
-            damageValue = DamageValue;
-            armorValue = ArmorValue;
-        }
+        
     }
 
     public void notify(string notificationText)
@@ -226,7 +105,8 @@ public class game : MonoBehaviour
         setNotificationActive();
         Invoke("setNotificationActive", 2f); // i love magic numbers
     }
-    private void setNotificationActive()
+
+    void setNotificationActive()
     {
         GameObject txt = floorsUi.transform.Find("notification text").gameObject;
         if (txt.activeInHierarchy)
@@ -269,18 +149,34 @@ public class game : MonoBehaviour
         {
             floor1GM.transform.Find("npcs").gameObject.SetActive(false);
         }
-    }    
+    }
 
-    public GameObject getTileToSpawn()
+    public GameObject getTileToSpawn(int floorNumber)
     {
-        switch (player.currentFloorNumber)
+        return getFloorByNumber(floorNumber).tileToSpawnOn;
+    }
+    public floor getFloorByNumber(int floorNumber)
+    {
+        switch (floorNumber)
         {
             case 2:
-                return tileToSpawnOnFloor2;
+                return floor2;
             case 3:
-                return tileToSpawnOnFloor3;
+                return floor3;
             default:
-                return tileToSpawnOnFloor2;
+                return null;
+        }
+    }
+    public GameObject getFloorGMByNumber(int floorNumber)
+    {
+        switch (floorNumber)
+        {
+            case 2:
+                return floor2GM;
+            case 3:
+                return floor3GM;
+            default:
+                return null;
         }
     }
 }
