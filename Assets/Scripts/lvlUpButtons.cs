@@ -9,7 +9,7 @@ public class lvlUpButtons : MonoBehaviour
     {
         if (player.profileData["skillPoints"] == "0") { return; }
         player.setProfileValue("skillPoints", (int.Parse(player.profileData["skillPoints"]) - 1).ToString());
-        player.setProfileValue("hpMax", (int.Parse(player.profileData["hpMax"]) + 1).ToString());
+        player.setProfileValue("hpMax", (int.Parse(player.profileData["hpMax"]) + 2).ToString());
     }
     public void increaseArmor()
     {

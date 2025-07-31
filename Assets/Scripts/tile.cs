@@ -9,7 +9,7 @@ public class tile : MonoBehaviour
     public string currentMarkImageName;
     public float chanceToLoot = 0.1f;
     public float chanceToFood = 0.2f;
-    public float chanceToEnemy = 0.2f;
+    public float chanceToEnemy = 0.15f;
     public float chanceToLadder = 0.05f;
     public int tileNumber;
     private void Start()

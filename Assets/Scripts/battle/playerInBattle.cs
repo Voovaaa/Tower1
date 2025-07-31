@@ -13,7 +13,6 @@ public class playerInBattle : MonoBehaviour
     public bool alive;
     public TMP_Text hpText;
 
-    public static bool wonLastBattle;
 
     public void startBattle()
     {
@@ -48,23 +47,15 @@ public class playerInBattle : MonoBehaviour
     public void die()
     {
         alive = false;
-        wonLastBattle = false;
-    }
-    public void gotXp(float xpGot)
-    {
-        float xp = float.Parse(saveLogic.getProfileSaveValue("xp"));
-        xp += xpGot;
-        if (xp > 1)
+        if (int.Parse(player.profileData["foodCollected"]) <= 10)
         {
-            xp -= 1;
-            lvlUp();
+            player.profileData["foodCollected"] = "0";
         }
-        saveLogic.setProfileSaveValue("xp", xp.ToString());
-    }
-    public void lvlUp()
-    {
-        int lvl = int.Parse(saveLogic.getProfileSaveValue("lvl"));
-        lvl += 1;
-        saveLogic.setProfileSaveValue("lvl", lvl.ToString());
+        else
+        {
+            player.profileData["foodCollected"] = (int.Parse(player.profileData["foodCollected"]) - 10).ToString();
+        }
+        saveLogic.setProfileSaveValue("foodCollected", player.profileData["foodCollected"]);
+        game.scripts.GetComponent<game>().notify("You lost your food");
     }
 }

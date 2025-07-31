@@ -97,7 +97,7 @@ public class saveLogic : MonoBehaviour
             "0;" +
             "23;" +
             "22;" + // 10
-            "60;" +
+            "120;" +
             "1;";
 
         saveKeys = saveKeysString.Split(";");
@@ -169,6 +169,38 @@ public class saveLogic : MonoBehaviour
         addLootToData(3, butcherKnife);
         loot firefightersUniform = new loot("firefighter's uniform", 0, 3);
         addLootToData(3, firefightersUniform);
+
+        floorNloot[4] = new List<loot>();
+        loot battleAxe = new loot("battle axe", 5, 0);
+        addLootToData(4, battleAxe);
+        loot chainMail = new loot("chain mail", 0, 4);
+        addLootToData(4, chainMail);
+
+        floorNloot[5] = new List<loot>();
+        loot spear = new loot("spear", 6, 0);
+        addLootToData(5, spear);
+        loot plateArmor = new loot("plate armor", 0, 5);
+        addLootToData(5, plateArmor);
+
+        floorNloot[6] = new List<loot>();
+        loot pistol = new loot("pistol", 8, 0);
+        addLootToData(6, pistol);
+
+        floorNloot[7] = new List<loot>();
+        loot doubleBarreledShotgun = new loot("double-barreled shotgun", 10, 0);
+        addLootToData(7, doubleBarreledShotgun);
+        loot bulletproofVest = new loot("bulletproof vest", 0, 6);
+        addLootToData(7, bulletproofVest);
+
+        floorNloot[8] = new List<loot>();
+        loot machineGun = new loot("machine gun", 12, 0);
+        addLootToData(8, machineGun);
+
+        floorNloot[9] = new List<loot>();
+        loot laserGun = new loot("laser gun", 16, 0);
+        addLootToData(9, laserGun);
+        loot exoskeleton = new loot("exoskeleton", 0, 12);
+        addLootToData(9, exoskeleton);
 
         static void addLootToData(int floorNumber, loot loot)
         {
