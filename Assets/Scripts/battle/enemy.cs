@@ -9,8 +9,20 @@ public class enemy : MonoBehaviour
     public Sprite wolfSpriteIdle;
     public Sprite wolfSpriteAttack;
     public Sprite circleSprite;
-    public Sprite goblinSpriteIdle;
-    public Sprite goblinSpriteAttack;
+    public Sprite unarmedGoblinSpriteIdle;
+    public Sprite unarmedGoblinSpriteAttack;
+    public Sprite bearIdle;
+    public Sprite bearAttack;
+    public Sprite armedGoblinIdle;
+    public Sprite armedGoblinAttack;
+    public Sprite banditIdle;
+    public Sprite banditAttack;
+    public Sprite veteranIdle;
+    public Sprite veteranAttack;
+    public Sprite androidIdle;
+    public Sprite androidAttack;
+    public Sprite helicopterIdle;
+    public Sprite helicopterAttack;
 
     public bool alive;
     public Sprite currentSpriteIdle;
@@ -36,7 +48,7 @@ public class enemy : MonoBehaviour
     {
         switch (game.enemyToSpawnName)
         {
-            case "wolf":
+            case "wolf": // 3
                 hpMax = 8;
                 armor = 0;
                 damage = 4;
@@ -52,13 +64,61 @@ public class enemy : MonoBehaviour
                 currentSpriteIdle = circleSprite;
                 currentSpriteAttack = circleSprite;
                 break;
-            case "unarmedGoblin":
+            case "unarmedGoblin": //2
                 hpMax = 4;
                 armor = 0;
-                damage = 2;
+                damage = 2; 
                 xp = 0.3f;
-                currentSpriteIdle = goblinSpriteIdle;
-                currentSpriteAttack = goblinSpriteAttack;
+                currentSpriteIdle = unarmedGoblinSpriteIdle;
+                currentSpriteAttack = unarmedGoblinSpriteAttack;
+                break;
+            case "bear": // 4
+                hpMax = 15;
+                armor = 2;
+                damage = 7;
+                xp = 0.5f;
+                currentSpriteAttack = bearAttack;
+                currentSpriteIdle = bearIdle;
+                break;
+            case "armedGoblin": //5
+                hpMax = 12;
+                armor = 5;
+                damage = 8;
+                xp = 0.6f;
+                currentSpriteAttack = armedGoblinAttack;
+                currentSpriteIdle = armedGoblinIdle;
+                break;
+            case "bandit": // 6
+                hpMax = 13;
+                armor = 5;
+                damage = 13;
+                xp = 0.7f;
+                currentSpriteAttack = banditAttack;
+                currentSpriteIdle = banditIdle;
+                break;
+            case "veteran": // 7
+                hpMax = 15;
+                armor = 7;
+                damage = 15;
+                xp = 0.8f;
+                currentSpriteAttack = veteranAttack;
+                currentSpriteIdle = veteranIdle;
+                break;
+            case "android": // 8
+                hpMax = 20;
+                armor = 9;
+                damage = 18;
+                xp = 0.9f;
+                currentSpriteAttack = androidAttack;
+                currentSpriteIdle = androidIdle;
+                break;
+            case "helicopter": // 9
+                hpMax = 30;
+                armor = 13;
+                damage = 20;
+                xp = 1f;
+                currentSpriteAttack = helicopterAttack;
+                currentSpriteIdle = helicopterIdle;
                 break;
             default:
                 break;
@@ -93,6 +153,5 @@ public class enemy : MonoBehaviour
         alive = false;
         player.gotXp(xp);
         player.currentFloor.enemyDied(game.enemyToSpawnName);
-        playerInBattle.wonLastBattle = true;
     }
 }

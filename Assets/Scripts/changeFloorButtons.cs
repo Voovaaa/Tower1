@@ -42,7 +42,7 @@ public class changeFloorButtons : MonoBehaviour
     {
         menu.SetActive(true);
         game.scripts.GetComponent<game>().floorsCanvas.SetActive(false);
-        for (int i = 2; i <= 3; i++) // ADDING FLOORS, CHANGE IT
+        for (int i = 2; i <= 9; i++) // ADDING FLOORS -> CHANGE IT
         {
             if (saveLogic.getFloorSaveValue(i, "wasHere") == "false")
             {
