@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Mathematics;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +6,7 @@ public class changeFloorButtons : MonoBehaviour
 {
     public static GameObject menu;
     private game scripts;
+    public GameObject floor10Button;
 
     private void Awake()
     {
@@ -21,7 +20,7 @@ public class changeFloorButtons : MonoBehaviour
         transform.parent.gameObject.SetActive(false);
         scripts.floorsUi.SetActive(false);
 
-        
+
     }
     public void toFloorN(int floorNumber)
     {
@@ -37,7 +36,13 @@ public class changeFloorButtons : MonoBehaviour
         player.currentFloor = scripts.getFloorByNumber(floorNumber);
         tile.initializeTiles(scripts.getFloorGMByNumber(floorNumber), floorNumber);
     }
-    
+    public void toFloor10()
+    {
+        game.scripts.GetComponent<game>().floorsUi.SetActive(false);
+        game.scripts.GetComponent<game>().floorsCanvas.SetActive(false);
+        ending.canvasEndings.SetActive(true);
+    }
+
     public void openMenu()
     {
         menu.SetActive(true);
@@ -53,8 +58,17 @@ public class changeFloorButtons : MonoBehaviour
                 menu.transform.Find($"to floor {i}").gameObject.GetComponent<Button>().interactable = true;
             }
         }
+        if (player.profileData.Keys.Contains<string>("floor10isOpen") && player.profileData["floor10isOpen"] == "true")
+        {
+            floor10Button.gameObject.GetComponent<Button>().interactable = true;
+        }
+        else
+        {
+            floor10Button.gameObject.GetComponent<Button>().interactable = false;
+        }
+
     }
 
-    
+
 
 }

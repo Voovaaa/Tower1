@@ -65,12 +65,14 @@ public partial class game : MonoBehaviour
     private List<loot> lootToDefaultSpawnFloor9;
     private Dictionary<string, string> enemiesNamountFloor9;
 
+    public GameObject endingsCanvas;
+
     // new floor: game: awake, get floors, floorNGM, floorN; savelogic: floorNloot; enemy: initialize+sprites; changeFloorButtons
 
     private void Awake()
     {
         scripts = transform.gameObject;
-        PlayerPrefs.DeleteAll(); // testMode
+        //PlayerPrefs.DeleteAll(); // testMode
 
         saveLogic.initializeAllLoot();
 
@@ -134,8 +136,12 @@ public partial class game : MonoBehaviour
         player.currentFloorNumber = defaultFloorNumber;
         player.currentFloor = floor2; // change it later
 
+        //player.profileData["damage"] = "100";
+        //player.profileData["armorValue"] = "100";
 
         changeFloorButtons.menu = floorsUi.transform.Find("change floor menu").gameObject;
+
+        ending.canvasEndings = endingsCanvas;
     }
 
     private void Update() // убрать всё из апдейта нахуй, да хотя похуй лан

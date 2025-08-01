@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class enemy : MonoBehaviour
 {
@@ -74,24 +75,24 @@ public class enemy : MonoBehaviour
                 break;
             case "bear": // 4
                 hpMax = 15;
-                armor = 2;
-                damage = 7;
+                armor = 1;
+                damage = 6;
                 xp = 0.5f;
                 currentSpriteAttack = bearAttack;
                 currentSpriteIdle = bearIdle;
                 break;
             case "armedGoblin": //5
                 hpMax = 12;
-                armor = 5;
-                damage = 8;
+                armor = 4;
+                damage = 7;
                 xp = 0.6f;
                 currentSpriteAttack = armedGoblinAttack;
                 currentSpriteIdle = armedGoblinIdle;
                 break;
             case "bandit": // 6
-                hpMax = 13;
-                armor = 5;
-                damage = 13;
+                hpMax = 14;
+                armor = 4;
+                damage = 10;
                 xp = 0.7f;
                 currentSpriteAttack = banditAttack;
                 currentSpriteIdle = banditIdle;
@@ -99,23 +100,23 @@ public class enemy : MonoBehaviour
             case "veteran": // 7
                 hpMax = 15;
                 armor = 7;
-                damage = 15;
+                damage = 12;
                 xp = 0.8f;
                 currentSpriteAttack = veteranAttack;
                 currentSpriteIdle = veteranIdle;
                 break;
             case "android": // 8
                 hpMax = 20;
-                armor = 9;
-                damage = 18;
+                armor = 10;
+                damage = 14;
                 xp = 0.9f;
                 currentSpriteAttack = androidAttack;
                 currentSpriteIdle = androidIdle;
                 break;
             case "helicopter": // 9
                 hpMax = 30;
-                armor = 13;
-                damage = 20;
+                armor = 12;
+                damage = 17;
                 xp = 1f;
                 currentSpriteAttack = helicopterAttack;
                 currentSpriteIdle = helicopterIdle;
