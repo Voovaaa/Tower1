@@ -117,10 +117,14 @@ public class tile : MonoBehaviour
     }
     public void ladderTileButton()
     {
+        if (player.currentFloorNumber == 9)
+        {
+            player.setProfileValue("floor10isOpen", "true");
+        }
         scripts.GetComponent<game>().getFloorByNumber(player.currentFloorNumber + 1).wasHere = true;
         saveLogic.setFloorSaveValue(player.currentFloorNumber + 1, "wasHere", "true");
         player.currentFloor.ladderFound = true;
-        saveLogic.setFloorSaveValue(player.currentFloorNumber, "ladderFound", "true");
+        saveLogic.setFloorSaveValue(player.currentFloorNumber, "ladderFound", "true");        
     }
 
     public bool isGetFood()
